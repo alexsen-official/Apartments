@@ -1,0 +1,8 @@
+namespace Apartments.Data.Entities
+{
+    public class Provider
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
