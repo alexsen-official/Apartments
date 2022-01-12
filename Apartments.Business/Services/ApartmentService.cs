@@ -1,23 +1,23 @@
-using Apartments.Data;
 using Apartments.Data.Entities;
 using Apartments.Data.Repositories;
 using Apartments.Models.ViewModel;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace Apartment.Business.Services
 {
     public class ApartmentService
     {
-        private readonly ApartmentsDbContext _dbContext;
+        private readonly IConfiguration _config;
 
-        public ApartmentService(ApartmentsDbContext dbContext)
+        public ApartmentService(IConfiguration config)
         {
-            _dbContext = dbContext;
+            _config = config;
         }
         
         public ApartmentViewModel? GetApartmentById(int id)
         {
-            InformationRepository informationRepository = new(_dbContext);
+            InformationRepository informationRepository = new(_config);
             Information? information = informationRepository.GetInformationById(id);
             
             KindViewItem? kindViewItem = null;
@@ -85,14 +85,14 @@ namespace Apartment.Business.Services
 
             ApartmentViewModel apartmentViewModel = new()
             {
-                Id = information.Apartment.Id,
+                Id = information.Id,
                 Kind = kindViewItem,
                 Address = addressViewItem,
                 Owner = ownerViewItem,
                 Provider = providerViewItem,
                 Amenities = amenityViewItems,
-                PetsAllowed = information.Apartment.PetsAllowed,
-                Price = information.Apartment.Price
+                PetsAllowed = information.PetsAllowed,
+                Price = information.Price
             };
 
             return apartmentViewModel;

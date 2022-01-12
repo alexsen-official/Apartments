@@ -1,65 +1,79 @@
-using System.Collections.Generic;
+using Dapper;
 using System.Linq;
-using System.Net;
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Apartments.Data.Entities;
 
 namespace Apartments.Data.Repositories
 {
     public class InformationRepository
     {
-        private readonly ApartmentsDbContext _dbContext;
+        private readonly IConfiguration _config;
 
-        public InformationRepository(ApartmentsDbContext dbContext)
+        public InformationRepository(IConfiguration config)
         {
-            _dbContext = dbContext;
+            _config = config;
         }
 
         public Information? GetInformationById(int id)
         {
-            var queryable =
-                (from apartment in _dbContext.Apartments
-                    join kind in _dbContext.Kinds
-                        on apartment.KindId equals kind.Id
-                        into kindsGroup
-                    from kindGroup in kindsGroup.DefaultIfEmpty()
-                    join address in _dbContext.Addresses
-                        on apartment.AddressId equals address.Id
-                        into addressesGroup
-                    from addressGroup in addressesGroup.DefaultIfEmpty()
-                    join owner in _dbContext.Owners
-                        on apartment.OwnerId equals owner.Id
-                        into ownersGroup
-                    from ownerGroup in ownersGroup.DefaultIfEmpty()
-                    join provider in _dbContext.Providers
-                        on apartment.ProviderId equals provider.Id
-                        into providersGroup
-                    from providerGroup in providersGroup.DefaultIfEmpty()
-                    join apartmentAmenity in _dbContext.ApartmentAmenities
-                        on apartment.Id equals apartmentAmenity.ApartmentId
-                    join amenity in _dbContext.Amenities
-                        on apartmentAmenity.AmenityId equals amenity.Id
-                    where apartmentAmenity.ApartmentId == id
-                    select new Information
+            using IDbConnection connection = new SqlConnection(
+                _config.GetConnectionString("DefaultConnection")
+            );
+
+            string sql = $@"SELECT Apartments.*,
+                                   Kinds.*,
+                                   Addresses.*,
+                                   Owners.*,
+                                   Providers.*,
+                                   Amenities.*
+                            FROM Apartments
+                            LEFT JOIN Kinds
+                                ON Apartments.kindId = Kinds.id
+                            LEFT JOIN Addresses
+                                ON Apartments.addressId = Addresses.id
+                            LEFT JOIN Owners
+                                ON Apartments.ownerId = Owners.Id
+                            LEFT JOIN Providers
+                                ON Apartments.providerId = Providers.id
+                            INNER JOIN ApartmentAmenities
+                                ON Apartments.id = ApartmentAmenities.apartmentId
+                            INNER JOIN Amenities
+                                ON ApartmentAmenities.amenityId = Amenities.id
+                            WHERE ApartmentAmenities.apartmentId = {id}";
+
+            IEnumerable<Information> query = connection
+                .Query<Information, Kind, Address, Owner, Provider, Amenity, Information>(
+                    sql,
+                    (information, kind, address, owner, provider, amenity) =>
                     {
-                        Apartment = apartment,
-                        Kind = kindGroup,
-                        Address = addressGroup,
-                        Owner = ownerGroup,
-                        Provider = providerGroup,
-                        Amenities = new List<Amenity> {amenity}
-                    }).ToList();
+                        information.Kind = kind;
+                        information.Address = address;
+                        information.Owner = owner;
+                        information.Provider = provider;
+                        information.Amenities ??= new List<Amenity>();
+                        information.Amenities.Add(amenity);
+                        return information;
+                    },
+                    new { ApartmentId = id },
+                    splitOn: "Id"
+                );
 
-            var result = queryable.FirstOrDefault();
+            Information? result = query
+                .GroupBy(information => information.Id)
+                .Select(group => {
+                    Information combinedInformation = group.First();
+                    
+                    combinedInformation.Amenities = group.Select(
+                        information => information.Amenities.Single()
+                    ).ToList();
+                    
+                    return combinedInformation;
+                }).FirstOrDefault();
 
-            if (result != null)
-            {
-                result.Amenities = queryable
-                    .Select(i => i.Amenities)
-                    .Select(i => i.First())
-                    .ToList();
-            }
-
-            return queryable.FirstOrDefault();
+            return result;
         }
     }
 }
