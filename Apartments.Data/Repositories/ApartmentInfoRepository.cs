@@ -17,7 +17,7 @@ namespace Apartments.Data.Repositories
             _config = config;
         }
 
-        public ApartmentInfo? GetInformationById(int id)
+        public ApartmentInfo GetInformationById(int id)
         {
             using IDbConnection connection = new SqlConnection(
                 _config.GetConnectionString("DefaultConnection")
@@ -61,15 +61,24 @@ namespace Apartments.Data.Repositories
                     splitOn: "Id"
                 ).ToList();
 
-            ApartmentInfo? result = query.FirstOrDefault();
+            ApartmentInfo result = query.FirstOrDefault();
 
             if (result != null)
             {
-                result.Amenities = query
+                var amenities = query
                     .Select(i => i.Amenities)
-                    .Select(i => i.First())
+                    .Select(i => i.FirstOrDefault())
                     .Where(i => i != null)
                     .ToList();
+
+                if (amenities.Count > 0)
+                {
+                    result.Amenities = amenities;
+                }
+                else
+                {
+                    result.Amenities = null;
+                }
             }
 
             return result;
