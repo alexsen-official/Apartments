@@ -15,64 +15,64 @@ namespace Apartment.Business.Services
             _config = config;
         }
         
-        public ApartmentViewModel? GetApartmentById(int id)
+        public ApartmentViewModel GetApartmentById(int id)
         {
-            InformationRepository informationRepository = new(_config);
-            Information? information = informationRepository.GetInformationById(id);
+            ApartmentInfoRepository apartmentInfoRepository = new(_config);
+            ApartmentInfo? apartmentInfo = apartmentInfoRepository.GetInformationById(id);
             
             KindViewItem? kindViewItem = null;
             AddressViewItem? addressViewItem = null;
             OwnerViewItem? ownerViewItem = null;
             ProviderViewItem? providerViewItem = null;
             
-            if (information == null)
+            if (apartmentInfo == null)
             {
-                return null;
+                return new ApartmentViewModel();
             }
 
-            if (information.Kind != null)
+            if (apartmentInfo.Kind != null)
             {
                 kindViewItem = new()
                 {
-                    Id = information.Kind.Id,
-                    Name = information.Kind.Name
+                    Id = apartmentInfo.Kind.Id,
+                    Name = apartmentInfo.Kind.Name
                 };
             }
 
-            if (information.Address != null)
+            if (apartmentInfo.Address != null)
             {
                 addressViewItem = new()
                 {
-                    Id = information.Address.Id,
-                    StreetName = information.Address.StreetName,
-                    HouseNumber = information.Address.HouseNumber,
-                    FlatNumber = information.Address.FlatNumber
+                    Id = apartmentInfo.Address.Id,
+                    StreetName = apartmentInfo.Address.StreetName,
+                    HouseNumber = apartmentInfo.Address.HouseNumber,
+                    FlatNumber = apartmentInfo.Address.FlatNumber
                 };
             }
 
-            if (information.Owner != null)
+            if (apartmentInfo.Owner != null)
             {
                 ownerViewItem = new()
                 {
-                    Id = information.Owner.Id,
-                    FirstName = information.Owner.FirstName,
-                    LastName = information.Owner.LastName,
-                    PhoneNumber = information.Owner.PhoneNumber
+                    Id = apartmentInfo.Owner.Id,
+                    FirstName = apartmentInfo.Owner.FirstName,
+                    LastName = apartmentInfo.Owner.LastName,
+                    PhoneNumber = apartmentInfo.Owner.PhoneNumber
                 };
             }
 
-            if (information.Provider != null)
+            if (apartmentInfo.Provider != null)
             {
                 providerViewItem = new()
                 {
-                    Id = information.Provider.Id,
-                    Name = information.Provider.Name
+                    Id = apartmentInfo.Provider.Id,
+                    Name = apartmentInfo.Provider.Name
                 };
             }
             
             List<AmenityViewItem> amenityViewItems = new();
 
-            foreach (Amenity amenity in information.Amenities)
+            foreach (Amenity amenity in apartmentInfo.Amenities)
             {
                 AmenityViewItem item = new()
                 {
@@ -85,14 +85,14 @@ namespace Apartment.Business.Services
 
             ApartmentViewModel apartmentViewModel = new()
             {
-                Id = information.Id,
+                Id = apartmentInfo.Id,
                 Kind = kindViewItem,
                 Address = addressViewItem,
                 Owner = ownerViewItem,
                 Provider = providerViewItem,
                 Amenities = amenityViewItems,
-                PetsAllowed = information.PetsAllowed,
-                Price = information.Price
+                PetsAllowed = apartmentInfo.PetsAllowed,
+                Price = apartmentInfo.Price
             };
 
             return apartmentViewModel;

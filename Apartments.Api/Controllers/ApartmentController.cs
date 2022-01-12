@@ -17,7 +17,7 @@ namespace Apartments.Controllers
         }
         
         [HttpGet("{id}")]
-        public ApartmentViewModel? GetApartmentById(int id)
+        public ApartmentViewModel GetApartmentById(int id)
         {
             ApartmentService apartmentService = new(_config);
             return apartmentService.GetApartmentById(id);

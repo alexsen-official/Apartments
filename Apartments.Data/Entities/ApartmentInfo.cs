@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Apartments.Data.Entities
 {
-    public class Information
+    public class ApartmentInfo
     {
         public int Id { get; set; }
         public Kind? Kind { get; set; }

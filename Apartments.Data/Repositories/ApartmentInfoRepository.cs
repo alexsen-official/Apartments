@@ -8,16 +8,16 @@ using Apartments.Data.Entities;
 
 namespace Apartments.Data.Repositories
 {
-    public class InformationRepository
+    public class ApartmentInfoRepository
     {
         private readonly IConfiguration _config;
 
-        public InformationRepository(IConfiguration config)
+        public ApartmentInfoRepository(IConfiguration config)
         {
             _config = config;
         }
 
-        public Information? GetInformationById(int id)
+        public ApartmentInfo? GetInformationById(int id)
         {
             using IDbConnection connection = new SqlConnection(
                 _config.GetConnectionString("DefaultConnection")
@@ -38,40 +38,39 @@ namespace Apartments.Data.Repositories
                                 ON Apartments.ownerId = Owners.Id
                             LEFT JOIN Providers
                                 ON Apartments.providerId = Providers.id
-                            INNER JOIN ApartmentAmenities
+                            LEFT JOIN ApartmentAmenities
                                 ON Apartments.id = ApartmentAmenities.apartmentId
-                            INNER JOIN Amenities
+                            LEFT JOIN Amenities
                                 ON ApartmentAmenities.amenityId = Amenities.id
-                            WHERE ApartmentAmenities.apartmentId = {id}";
+                            WHERE Apartments.id = {id}";
 
-            IEnumerable<Information> query = connection
-                .Query<Information, Kind, Address, Owner, Provider, Amenity, Information>(
+            List<ApartmentInfo> query = connection
+                .Query<ApartmentInfo, Kind, Address, Owner, Provider, Amenity, ApartmentInfo>(
                     sql,
-                    (information, kind, address, owner, provider, amenity) =>
+                    (apartmentInfo, kind, address, owner, provider, amenity) =>
                     {
-                        information.Kind = kind;
-                        information.Address = address;
-                        information.Owner = owner;
-                        information.Provider = provider;
-                        information.Amenities ??= new List<Amenity>();
-                        information.Amenities.Add(amenity);
-                        return information;
+                        apartmentInfo.Kind = kind;
+                        apartmentInfo.Address = address;
+                        apartmentInfo.Owner = owner;
+                        apartmentInfo.Provider = provider;
+                        apartmentInfo.Amenities ??= new List<Amenity>();
+                        apartmentInfo.Amenities.Add(amenity);
+                        return apartmentInfo;
                     },
-                    new { ApartmentId = id },
+                    new { Id = id },
                     splitOn: "Id"
-                );
+                ).ToList();
 
-            Information? result = query
-                .GroupBy(information => information.Id)
-                .Select(group => {
-                    Information combinedInformation = group.First();
-                    
-                    combinedInformation.Amenities = group.Select(
-                        information => information.Amenities.Single()
-                    ).ToList();
-                    
-                    return combinedInformation;
-                }).FirstOrDefault();
+            ApartmentInfo? result = query.FirstOrDefault();
+
+            if (result != null)
+            {
+                result.Amenities = query
+                    .Select(i => i.Amenities)
+                    .Select(i => i.First())
+                    .Where(i => i != null)
+                    .ToList();
+            }
 
             return result;
         }
