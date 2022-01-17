@@ -24,82 +24,79 @@ namespace Apartment.Business.Services
             AddressViewItem addressViewItem = null;
             OwnerViewItem ownerViewItem = null;
             ProviderViewItem providerViewItem = null;
-            List<AmenityViewItem> amenityViewItems = null;
+            
+            List<AmenityViewItem> amenityViewItems = new();
 
-            ApartmentViewModel apartmentViewModel = null;
-
-            if (apartmentInfo != null)
+            if (apartmentInfo is null)
             {
-                if (apartmentInfo.Kind != null)
+                return null;
+            }
+            
+            if (apartmentInfo.Kind is not null)
+            {
+                kindViewItem = new KindViewItem
                 {
-                    kindViewItem = new()
-                    {
-                        Id = apartmentInfo.Kind.Id,
-                        Name = apartmentInfo.Kind.Name
-                    };
-                }
-
-                if (apartmentInfo.Address != null)
-                {
-                    addressViewItem = new()
-                    {
-                        Id = apartmentInfo.Address.Id,
-                        StreetName = apartmentInfo.Address.StreetName,
-                        HouseNumber = apartmentInfo.Address.HouseNumber,
-                        FlatNumber = apartmentInfo.Address.FlatNumber
-                    };
-                }
-
-                if (apartmentInfo.Owner != null)
-                {
-                    ownerViewItem = new()
-                    {
-                        Id = apartmentInfo.Owner.Id,
-                        FirstName = apartmentInfo.Owner.FirstName,
-                        LastName = apartmentInfo.Owner.LastName,
-                        PhoneNumber = apartmentInfo.Owner.PhoneNumber
-                    };
-                }
-
-                if (apartmentInfo.Provider != null)
-                {
-                    providerViewItem = new()
-                    {
-                        Id = apartmentInfo.Provider.Id,
-                        Name = apartmentInfo.Provider.Name
-                    };
-                }
-
-                if (apartmentInfo.Amenities != null)
-                {
-                    amenityViewItems = new();
-
-                    foreach (Amenity amenity in apartmentInfo.Amenities)
-                    {
-                        AmenityViewItem item = new()
-                        {
-                            Id = amenity.Id,
-                            Name = amenity.Name
-                        };
-
-                        amenityViewItems.Add(item);
-                    }
-                }
-
-                apartmentViewModel = new()
-                {
-                    Id = apartmentInfo.Id,
-                    Kind = kindViewItem,
-                    Address = addressViewItem,
-                    Owner = ownerViewItem,
-                    Provider = providerViewItem,
-                    Amenities = amenityViewItems,
-                    PetsAllowed = apartmentInfo.PetsAllowed,
-                    Price = apartmentInfo.Price
+                    Id = apartmentInfo.Kind.Id,
+                    Name = apartmentInfo.Kind.Name
                 };
             }
 
-            return apartmentViewModel;
+            if (apartmentInfo.Address is not null)
+            {
+                addressViewItem = new AddressViewItem
+                {
+                    Id = apartmentInfo.Address.Id,
+                    StreetName = apartmentInfo.Address.StreetName,
+                    HouseNumber = apartmentInfo.Address.HouseNumber,
+                    FlatNumber = apartmentInfo.Address.FlatNumber
+                };
+            }
+
+            if (apartmentInfo.Owner is not null)
+            {
+                ownerViewItem = new OwnerViewItem
+                {
+                    Id = apartmentInfo.Owner.Id,
+                    FirstName = apartmentInfo.Owner.FirstName,
+                    LastName = apartmentInfo.Owner.LastName,
+                    PhoneNumber = apartmentInfo.Owner.PhoneNumber
+                };
+            }
+
+            if (apartmentInfo.Provider is not null)
+            {
+                providerViewItem = new ProviderViewItem
+                {
+                    Id = apartmentInfo.Provider.Id,
+                    Name = apartmentInfo.Provider.Name
+                };
+            }
+
+            if (apartmentInfo.Amenities is not null)
+            {
+                foreach (Amenity amenity in apartmentInfo.Amenities)
+                {
+                    amenityViewItems.Add(
+                        new AmenityViewItem
+                        {
+                            Id = amenity.Id,
+                            Name = amenity.Name
+                        }
+                    );
+                }
+            }
+
+            return new ApartmentViewModel 
+            {
+                Id = apartmentInfo.Id,
+                Kind = kindViewItem,
+                Address = addressViewItem,
+                Owner = ownerViewItem,
+                Provider = providerViewItem,
+                Amenities = amenityViewItems,
+                PetsAllowed = apartmentInfo.PetsAllowed,
+                Price = apartmentInfo.Price
+            };
         }
     }
 }

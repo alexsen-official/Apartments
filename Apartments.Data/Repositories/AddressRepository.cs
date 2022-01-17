@@ -1,8 +1,6 @@
 using Dapper;
-using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
-using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Apartments.Data.Entities;
 
@@ -17,19 +15,17 @@ namespace Apartments.Data.Repositories
             _config = config;
         }
 
-        public Address? GetAddressById(int id)
+        public Address GetAddressById(int id)
         {
             using IDbConnection connection = new SqlConnection(
                 _config.GetConnectionString("DefaultConnection")
             );
 
-            string sql = $@"SELECT TOP(1) *
-                            FROM Addresses
-                            WHERE id = ${id}";
+            string sql = @"SELECT TOP(1) *
+                           FROM Addresses
+                           WHERE id = @addressId";
             
-            IEnumerable<Address>? query = connection.Query<Address>(sql);
-            
-            return query.FirstOrDefault();
+            return connection.QueryFirstOrDefault(sql, new { addressId = id });
         }
     }
 }

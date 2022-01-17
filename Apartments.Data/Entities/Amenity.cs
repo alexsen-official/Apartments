@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Apartments.Data.Entities
 {
     public class Amenity

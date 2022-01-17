@@ -23,15 +23,13 @@ namespace Apartments.Data.Repositories
                 _config.GetConnectionString("DefaultConnection")
             );
 
-            string sql = $@"SELECT Amenities.*
-                            FROM Amenities
-                            INNER JOIN ApartmentAmenities
-                              ON Amenities.id = ApartmentAmenities.amenityId
-                            WHERE ApartmentAmenities.apartmentId = {id}";
+            string sql = @"SELECT Amenities.*
+                           FROM Amenities
+                           INNER JOIN ApartmentAmenities
+                                 ON Amenities.id = ApartmentAmenities.amenityId
+                           WHERE ApartmentAmenities.apartmentId = @apartmentId";
             
-            IEnumerable<Amenity>? query = connection.Query<Amenity>(sql);
-            
-            return query.ToList();
+            return connection.Query<Amenity>(sql, new { apartmentId = id }).ToList();
         }
     }
 }
