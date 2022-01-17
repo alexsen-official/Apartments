@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
@@ -16,7 +17,7 @@ namespace Apartments.Data.Repositories
             _config = config;
         }
 
-        public ApartmentInfo? GetInformationById(int id)
+        public ApartmentInfo GetInformationById(int id)
         {
             using IDbConnection connection = new SqlConnection(
                 _config.GetConnectionString("DefaultConnection")
@@ -42,33 +43,40 @@ namespace Apartments.Data.Repositories
                            LEFT JOIN Amenities
                                 ON ApartmentAmenities.amenityId = Amenities.id
                            WHERE Apartments.id = @apartmentId";
-
-            ApartmentInfo result = new();
-
-            return connection
+            
+            List<ApartmentInfo> query = connection
                 .Query<ApartmentInfo, Kind, Address, Owner, Provider, Amenity, ApartmentInfo>(
                     sql,
                     (apartmentInfo, kind, address, owner, provider, amenity) =>
                     {
-                        result.Id = apartmentInfo.Id;
-                        result.Kind = kind;
-                        result.Address = address;
-                        result.Owner = owner;
-                        result.Provider = provider;
-                        result.PetsAllowed = apartmentInfo.PetsAllowed;
-                        result.Price = apartmentInfo.Price;
+                        apartmentInfo.Kind = kind;
+                        apartmentInfo.Address = address;
+                        apartmentInfo.Owner = owner;
+                        apartmentInfo.Provider = provider;
 
                         if (amenity is not null)
                         {
-                            result.Amenities.Add(amenity);
+                            apartmentInfo.Amenities.Add(amenity);
                         }
 
-                        return result;
+                        return apartmentInfo;
                     },
                     new { apartmentId = id },
                     splitOn: "id"
                 )
-                .LastOrDefault();
+                .ToList();
+
+            ApartmentInfo result = query.FirstOrDefault();
+
+            if (result is not null)
+            {
+                result.Amenities = query
+                    .Where(i => i.Amenities.Any())
+                    .SelectMany(i => i.Amenities)
+                    .ToList();
+            }
+
+            return result;
         }
     }
 }
