@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Apartments.Data.Entities;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace Apartments.Data.Repositories
 {
@@ -43,7 +43,9 @@ namespace Apartments.Data.Repositories
                            LEFT JOIN Amenities
                                 ON ApartmentAmenities.amenityId = Amenities.id
                            WHERE Apartments.id = @apartmentId";
-            
+
+            List<Amenity> amenities = new();
+
             List<ApartmentInfo> query = connection
                 .Query<ApartmentInfo, Kind, Address, Owner, Provider, Amenity, ApartmentInfo>(
                     sql,
@@ -54,9 +56,9 @@ namespace Apartments.Data.Repositories
                         apartmentInfo.Owner = owner;
                         apartmentInfo.Provider = provider;
 
-                        if (amenity is not null)
+                        if (amenity != null)
                         {
-                            apartmentInfo.Amenities.Add(amenity);
+                            amenities.Add(amenity);
                         }
 
                         return apartmentInfo;
@@ -68,12 +70,9 @@ namespace Apartments.Data.Repositories
 
             ApartmentInfo result = query.FirstOrDefault();
 
-            if (result is not null)
+            if (result != null)
             {
-                result.Amenities = query
-                    .Where(i => i.Amenities.Any())
-                    .SelectMany(i => i.Amenities)
-                    .ToList();
+                result.Amenities = amenities;
             }
 
             return result;

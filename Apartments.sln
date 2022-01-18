@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apartments.Business", "Apar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apartments.Models", "Apartments.Models\Apartments.Models.csproj", "{C1FA57BF-C578-478D-B4D9-D4624FED13CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFData", "EFData\EFData.csproj", "{BCCD68DE-AA85-4F13-A66B-7BF5388EBA7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{C1FA57BF-C578-478D-B4D9-D4624FED13CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1FA57BF-C578-478D-B4D9-D4624FED13CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1FA57BF-C578-478D-B4D9-D4624FED13CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCCD68DE-AA85-4F13-A66B-7BF5388EBA7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCCD68DE-AA85-4F13-A66B-7BF5388EBA7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCCD68DE-AA85-4F13-A66B-7BF5388EBA7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCCD68DE-AA85-4F13-A66B-7BF5388EBA7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -27,12 +27,12 @@ namespace Apartment.Business.Services
             
             List<AmenityViewItem> amenityViewItems = new();
 
-            if (apartmentInfo is null)
+            if (apartmentInfo == null)
             {
                 return null;
             }
             
-            if (apartmentInfo.Kind is not null)
+            if (apartmentInfo.Kind != null)
             {
                 kindViewItem = new KindViewItem
                 {
@@ -41,7 +41,7 @@ namespace Apartment.Business.Services
                 };
             }
 
-            if (apartmentInfo.Address is not null)
+            if (apartmentInfo.Address != null)
             {
                 addressViewItem = new AddressViewItem
                 {
@@ -52,7 +52,7 @@ namespace Apartment.Business.Services
                 };
             }
 
-            if (apartmentInfo.Owner is not null)
+            if (apartmentInfo.Owner != null)
             {
                 ownerViewItem = new OwnerViewItem
                 {
@@ -63,7 +63,7 @@ namespace Apartment.Business.Services
                 };
             }
 
-            if (apartmentInfo.Provider is not null)
+            if (apartmentInfo.Provider != null)
             {
                 providerViewItem = new ProviderViewItem
                 {
@@ -72,7 +72,7 @@ namespace Apartment.Business.Services
                 };
             }
 
-            if (apartmentInfo.Amenities is not null)
+            if (apartmentInfo.Amenities != null)
             {
                 foreach (Amenity amenity in apartmentInfo.Amenities)
                 {
