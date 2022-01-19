@@ -1,7 +1,7 @@
+using EFData;
 using Apartment.Business.Services;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace Apartments.Controllers
 {
@@ -9,17 +9,17 @@ namespace Apartments.Controllers
     [ApiController]
     public class ApartmentController : Controller
     {
-        private readonly IConfiguration _config;
+        private readonly EFApartmentsContext _context;
 
-        public ApartmentController(IConfiguration config)
+        public ApartmentController(EFApartmentsContext context)
         {
-            _config = config;
+            _context = context;
         }
         
         [HttpGet("{id}")]
         public ApartmentViewModel GetApartmentById(int id)
         {
-            ApartmentService apartmentService = new(_config);
+            ApartmentService apartmentService = new(_context);
             return apartmentService.GetApartmentById(id);
         }
     }

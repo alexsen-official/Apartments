@@ -1,24 +1,24 @@
-using Apartments.Data.Entities;
-using Apartments.Data.Repositories;
+using EFData;
+using EFData.Entities;
+using EFData.Repositories;
 using Apartments.Models.ViewModel;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
 
 namespace Apartment.Business.Services
 {
     public class ApartmentService
     {
-        private readonly IConfiguration _config;
+        private readonly EFApartmentsContext _context;
 
-        public ApartmentService(IConfiguration config)
+        public ApartmentService(EFApartmentsContext context)
         {
-            _config = config;
+            _context = context;
         }
         
         public ApartmentViewModel GetApartmentById(int id)
         {
-            ApartmentInfoRepository apartmentInfoRepository = new(_config);
-            ApartmentInfo apartmentInfo = apartmentInfoRepository.GetInformationById(id);
+            ApartmentRepository apartmentRepository = new(_context);
+            EFData.Entities.Apartment apartment = apartmentRepository.GetApartmentById(id);
             
             KindViewItem kindViewItem = null;
             AddressViewItem addressViewItem = null;
@@ -27,54 +27,54 @@ namespace Apartment.Business.Services
             
             List<AmenityViewItem> amenityViewItems = new();
 
-            if (apartmentInfo == null)
+            if (apartment == null)
             {
                 return null;
             }
             
-            if (apartmentInfo.Kind != null)
+            if (apartment.Kind != null)
             {
                 kindViewItem = new KindViewItem
                 {
-                    Id = apartmentInfo.Kind.Id,
-                    Name = apartmentInfo.Kind.Name
+                    Id = apartment.Kind.Id,
+                    Name = apartment.Kind.Name
                 };
             }
 
-            if (apartmentInfo.Address != null)
+            if (apartment.Address != null)
             {
                 addressViewItem = new AddressViewItem
                 {
-                    Id = apartmentInfo.Address.Id,
-                    StreetName = apartmentInfo.Address.StreetName,
-                    HouseNumber = apartmentInfo.Address.HouseNumber,
-                    FlatNumber = apartmentInfo.Address.FlatNumber
+                    Id = apartment.Address.Id,
+                    StreetName = apartment.Address.StreetName,
+                    HouseNumber = apartment.Address.HouseNumber,
+                    FlatNumber = apartment.Address.FlatNumber
                 };
             }
 
-            if (apartmentInfo.Owner != null)
+            if (apartment.Owner != null)
             {
                 ownerViewItem = new OwnerViewItem
                 {
-                    Id = apartmentInfo.Owner.Id,
-                    FirstName = apartmentInfo.Owner.FirstName,
-                    LastName = apartmentInfo.Owner.LastName,
-                    PhoneNumber = apartmentInfo.Owner.PhoneNumber
+                    Id = apartment.Owner.Id,
+                    FirstName = apartment.Owner.FirstName,
+                    LastName = apartment.Owner.LastName,
+                    PhoneNumber = apartment.Owner.PhoneNumber
                 };
             }
 
-            if (apartmentInfo.Provider != null)
+            if (apartment.Provider != null)
             {
                 providerViewItem = new ProviderViewItem
                 {
-                    Id = apartmentInfo.Provider.Id,
-                    Name = apartmentInfo.Provider.Name
+                    Id = apartment.Provider.Id,
+                    Name = apartment.Provider.Name
                 };
             }
 
-            if (apartmentInfo.Amenities != null)
+            if (apartment.Amenities != null)
             {
-                foreach (Amenity amenity in apartmentInfo.Amenities)
+                foreach (Amenity amenity in apartment.Amenities)
                 {
                     amenityViewItems.Add(
                         new AmenityViewItem
@@ -88,14 +88,14 @@ namespace Apartment.Business.Services
 
             return new ApartmentViewModel 
             {
-                Id = apartmentInfo.Id,
+                Id = apartment.Id,
                 Kind = kindViewItem,
                 Address = addressViewItem,
                 Owner = ownerViewItem,
                 Provider = providerViewItem,
                 Amenities = amenityViewItems,
-                PetsAllowed = apartmentInfo.PetsAllowed,
-                Price = apartmentInfo.Price
+                PetsAllowed = apartment.PetsAllowed,
+                Price = apartment.Price
             };
         }
     }

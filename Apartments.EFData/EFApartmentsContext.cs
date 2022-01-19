@@ -3,13 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFData
 {
-    public class ApartmentsDbContext : DbContext
+    public class EFApartmentsContext : DbContext
     {
-        public ApartmentsDbContext(DbContextOptions<ApartmentsDbContext> options) : base(options)
+        public EFApartmentsContext(DbContextOptions<EFApartmentsContext> options) : base(options)
         {
 
         }
-
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Kind> Kinds { get; set; }
         public DbSet<Address> Addresses { get; set; }

@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<ApartmentsDbContext>(options => options.UseSqlServer(
+builder.Services.AddDbContext<EFApartmentsContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("EFDefaultConnection")
 ));
 

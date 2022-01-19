@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Apartments.Data\Apartments.Data.csproj" />
+      <ProjectReference Include="..\Apartments.EFData\Apartments.EFData.csproj" />
       <ProjectReference Include="..\Apartments.Models\Apartments.Models.csproj" />
     </ItemGroup>
 
