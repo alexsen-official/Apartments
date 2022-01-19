@@ -21,10 +21,5 @@ namespace EFData.Repositories
         {
             return _context.Providers.FirstOrDefault(provider => provider.Id == id);
         }
-        
-        public Provider GetProviderByApartmentId(int apartmentId)
-        {
-            return _context.Providers.FirstOrDefault(provider => provider.ApartmentId == apartmentId);
-        }
     }
 }

@@ -15,7 +15,7 @@ namespace Apartments.Controllers
         {
             _context = context;
         }
-        
+
         [HttpGet("{id}")]
         public ApartmentViewModel GetApartmentById(int id)
         {

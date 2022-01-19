@@ -1,6 +1,7 @@
 using System.Linq;
 using EFData.Entities;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFData.Repositories
 {
@@ -12,15 +13,16 @@ namespace EFData.Repositories
         {
             _context = context;
         }
-        
-        public List<Apartment> GetApartments()
-        {
-            return _context.Apartments.ToList();
-        }
 
         public Apartment GetApartmentById(int id)
         {
-            return _context.Apartments.FirstOrDefault(i => i.Id == id);
+            return _context.Apartments
+                .Include(apartment => apartment.Kind)
+                .Include(apartment => apartment.Address)
+                .Include(apartment => apartment.Owner)
+                .Include(apartment => apartment.Provider)
+                .Include(apartment => apartment.Amenities)
+                .FirstOrDefault(apartment => apartment.Id == id);
         }
     }
 }

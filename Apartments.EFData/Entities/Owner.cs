@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace EFData.Entities
 {
     public class Owner
@@ -7,7 +9,6 @@ namespace EFData.Entities
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         
-        public int ApartmentId { get; set; }
-        public Apartment Apartment { get; set; }
+        public List<Apartment> Apartments { get; set; }
     }
 }

@@ -22,10 +22,5 @@ namespace EFData.Repositories
         {
             return _context.Owners.FirstOrDefault(owner => owner.Id == id);
         }
-        
-        public Owner GetOwnerByApartmentId(int apartmentId)
-        {
-            return _context.Owners.FirstOrDefault(owner => owner.ApartmentId == apartmentId);
-        }
     }
 }

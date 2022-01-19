@@ -7,7 +7,6 @@ namespace EFData.Entities
         public int HouseNumber { get; set; }
         public int? FlatNumber { get; set; }
         
-        public int ApartmentId { get; set; }
         public Apartment Apartment { get; set; }
     }
 }

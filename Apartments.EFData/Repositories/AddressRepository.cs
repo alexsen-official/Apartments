@@ -1,6 +1,7 @@
 using System.Linq;
 using EFData.Entities;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFData.Repositories
 {
@@ -25,7 +26,9 @@ namespace EFData.Repositories
         
         public Address GetAddressByApartmentId(int apartmentId)
         {
-            return _context.Addresses.FirstOrDefault(address => address.ApartmentId == apartmentId);
+            return _context.Addresses
+                .Include(address => address.Apartment)
+                .FirstOrDefault(address => address.Apartment.Id == apartmentId);
         }
     }
 }

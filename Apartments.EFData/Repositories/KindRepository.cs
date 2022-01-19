@@ -22,10 +22,5 @@ namespace EFData.Repositories
         {
             return _context.Kinds.FirstOrDefault(kind => kind.Id == id);
         }
-        
-        public Kind GetKindByApartmentId(int apartmentId)
-        {
-            return _context.Kinds.FirstOrDefault(kind => kind.ApartmentId == apartmentId);
-        }
     }
 }
