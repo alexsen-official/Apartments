@@ -3,10 +3,11 @@ using EFData.Entities;
 using EFData.Repositories;
 using Apartments.Models.ViewModel;
 using System.Collections.Generic;
+using Apartment.Business.Services.Interfaces;
 
 namespace Apartment.Business.Services
 {
-    public class ApartmentService
+    public class ApartmentService : IApartmentService
     {
         private readonly EFApartmentsContext _context;
 

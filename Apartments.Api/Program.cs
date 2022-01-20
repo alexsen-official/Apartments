@@ -1,3 +1,5 @@
+using Apartment.Business.Services;
+using Apartment.Business.Services.Interfaces;
 using EFData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<EFApartmentsContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("EFDefaultConnection")
 ));
+
+builder.Services.AddScoped<IApartmentService, ApartmentService>();
 
 WebApplication app = builder.Build();
 

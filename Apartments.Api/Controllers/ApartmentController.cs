@@ -1,6 +1,4 @@
-using EFData;
-using Apartment.Business.Services;
-using Apartments.Models.ViewModel;
+using Apartment.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Apartments.Controllers
@@ -9,18 +7,17 @@ namespace Apartments.Controllers
     [ApiController]
     public class ApartmentController : Controller
     {
-        private readonly EFApartmentsContext _context;
+        private readonly IApartmentService _apartmentService;
 
-        public ApartmentController(EFApartmentsContext context)
+        public ApartmentController(IApartmentService apartmentService)
         {
-            _context = context;
+            _apartmentService = apartmentService;
         }
 
         [HttpGet("{id}")]
-        public ApartmentViewModel GetApartmentById(int id)
+        public IActionResult GetApartmentById(int id)
         {
-            ApartmentService apartmentService = new(_context);
-            return apartmentService.GetApartmentById(id);
+            return Ok(_apartmentService.GetApartmentById(id));
         }
     }
 }
