@@ -1,26 +1,27 @@
 using System.Linq;
-using EFData.Entities;
 using System.Collections.Generic;
+using EfData.Entities;
+using EfData.Interfaces;
 
-namespace EFData.Repositories
+namespace EfData.Repositories
 {
-    public class KindRepository
+    public class KindRepository : IKindRepository
     {
-        private readonly EFApartmentsContext _context;
+        private readonly EfApartmentsContext _context;
 
-        public KindRepository(EFApartmentsContext context)
+        public KindRepository(EfApartmentsContext context)
         {
             _context = context;
         }
         
-        public List<Kind> GetKinds()
+        public IEnumerable<Kind> GetKinds()
         {
-            return _context.Kinds.ToList();
+            return _context.Kinds;
         }
 
         public Kind GetKindById(int id)
         {
-            return _context.Kinds.FirstOrDefault(kind => kind.Id == id);
+            return GetKinds().FirstOrDefault(kind => kind.Id == id);
         }
     }
 }

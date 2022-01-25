@@ -1,12 +1,12 @@
-using EFData.Entities;
+using EfData.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EFData
+namespace EfData
 {
-    public class EFApartmentsContext : DbContext
+    public class EfApartmentsContext : DbContext
     {
         private readonly string _connectionString;
-        public EFApartmentsContext()
+        public EfApartmentsContext()
         {
             _connectionString = Startup.GetConnectionString();
         }

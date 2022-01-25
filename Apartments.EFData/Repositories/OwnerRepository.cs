@@ -1,26 +1,27 @@
 using System.Linq;
-using EFData.Entities;
 using System.Collections.Generic;
+using EfData.Entities;
+using EfData.Interfaces;
 
-namespace EFData.Repositories
+namespace EfData.Repositories
 {
-    public class OwnerRepository
+    public class OwnerRepository : IOwnerRepository
     {
-        private readonly EFApartmentsContext _context;
+        private readonly EfApartmentsContext _context;
 
-        public OwnerRepository(EFApartmentsContext context)
+        public OwnerRepository(EfApartmentsContext context)
         {
             _context = context;
         }
 
-        public List<Owner> GetOwners()
+        public IEnumerable<Owner> GetOwners()
         {
-            return _context.Owners.ToList();
+            return _context.Owners;
         }
 
         public Owner GetOwnerById(int id)
         {
-            return _context.Owners.FirstOrDefault(owner => owner.Id == id);
+            return GetOwners().FirstOrDefault(owner => owner.Id == id);
         }
     }
 }

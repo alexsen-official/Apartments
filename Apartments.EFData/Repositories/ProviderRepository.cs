@@ -1,25 +1,26 @@
 using System.Linq;
-using EFData.Entities;
 using System.Collections.Generic;
+using EfData.Entities;
+using EfData.Interfaces;
 
-namespace EFData.Repositories
+namespace EfData.Repositories
 {
-    public class ProviderRepository
+    public class ProviderRepository : IProviderRepository
     {
-        private readonly EFApartmentsContext _context;
+        private readonly EfApartmentsContext _context;
 
-        public ProviderRepository(EFApartmentsContext context)
+        public ProviderRepository(EfApartmentsContext context)
         {
             _context = context;
         }
-        public List<Provider> GetProviders()
+        public IEnumerable<Provider> GetProviders()
         {
-            return _context.Providers.ToList();
+            return _context.Providers;
         }
 
         public Provider GetProviderById(int id)
         {
-            return _context.Providers.FirstOrDefault(provider => provider.Id == id);
+            return GetProviders().FirstOrDefault(provider => provider.Id == id);
         }
     }
 }

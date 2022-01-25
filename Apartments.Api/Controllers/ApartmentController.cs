@@ -1,4 +1,4 @@
-using Apartment.Business.Services.Interfaces;
+using Apartment.Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Apartments.Controllers
@@ -13,8 +13,14 @@ namespace Apartments.Controllers
         {
             _apartmentService = apartmentService;
         }
+        
+        [HttpGet]
+        public IActionResult GetApartments()
+        {
+            return Ok(_apartmentService.GetApartments());
+        }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public IActionResult GetApartmentById(int id)
         {
             return Ok(_apartmentService.GetApartmentById(id));

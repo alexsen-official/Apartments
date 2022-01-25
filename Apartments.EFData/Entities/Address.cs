@@ -1,4 +1,4 @@
-namespace EFData.Entities
+namespace EfData.Entities
 {
     public class Address
     {

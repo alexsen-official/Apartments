@@ -1,34 +1,27 @@
 using System.Linq;
-using EFData.Entities;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+using EfData.Entities;
+using EfData.Interfaces;
 
-namespace EFData.Repositories
+namespace EfData.Repositories
 {
-    public class AddressRepository
+    public class AddressRepository : IAddressRepository
     {
-        private readonly EFApartmentsContext _context;
+        private readonly EfApartmentsContext _context;
 
-        public AddressRepository(EFApartmentsContext context)
+        public AddressRepository(EfApartmentsContext context)
         {
             _context = context;
         }
         
-        public List<Address> GetAddresses()
+        public IEnumerable<Address> GetAddresses()
         {
-            return _context.Addresses.ToList();
+            return _context.Addresses;
         }
 
         public Address GetAddressById(int id)
         {
-            return _context.Addresses.FirstOrDefault(address => address.Id == id);
-        }
-        
-        public Address GetAddressByApartmentId(int apartmentId)
-        {
-            return _context.Addresses
-                .Include(address => address.Apartment)
-                .FirstOrDefault(address => address.Apartment.Id == apartmentId);
+            return GetAddresses().FirstOrDefault(address => address.Id == id);
         }
     }
 }

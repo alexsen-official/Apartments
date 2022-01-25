@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EFData.Entities
+namespace EfData.Entities
 {
     public class Kind
     {

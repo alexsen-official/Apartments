@@ -1,26 +1,27 @@
 using System.Linq;
-using EFData.Entities;
 using System.Collections.Generic;
+using EfData.Entities;
+using EfData.Interfaces;
 
-namespace EFData.Repositories
+namespace EfData.Repositories
 {
-    public class AmenityRepository
+    public class AmenityRepository : IAmenityRepository
     {
-        private readonly EFApartmentsContext _context;
+        private readonly EfApartmentsContext _context;
 
-        public AmenityRepository(EFApartmentsContext context)
+        public AmenityRepository(EfApartmentsContext context)
         {
             _context = context;
         }
         
-        public List<Amenity> GetAmenities()
+        public IEnumerable<Amenity> GetAmenities()
         {
-            return _context.Amenities.ToList();
+            return _context.Amenities;
         }
 
         public Amenity GetAmenityById(int id)
         {
-            return _context.Amenities.FirstOrDefault(amenity => amenity.Id == id);
+            return GetAmenities().FirstOrDefault(amenity => amenity.Id == id);
         }
     }
 }

@@ -1,10 +1,12 @@
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Apartments.Data
 {
-    public class Startup
+    public static class Startup
     {
         private static string _connectionString;
         
-        public static void PassConnectionString(string connectionString)
+        public static void PassConnectionString(IServiceCollection services, string connectionString)
         {
             _connectionString = connectionString;
         }
