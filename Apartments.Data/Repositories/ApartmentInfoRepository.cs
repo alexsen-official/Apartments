@@ -3,25 +3,15 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Apartments.Data.Entities;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace Apartments.Data.Repositories
 {
-    public class ApartmentInfoRepository
+    public class ApartmentInfoRepository : IApartmentInfoRepository
     {
-        private readonly IConfiguration _config;
-
-        public ApartmentInfoRepository(IConfiguration config)
-        {
-            _config = config;
-        }
-
         public ApartmentInfo GetInformationById(int id)
         {
-            using IDbConnection connection = new SqlConnection(
-                _config.GetConnectionString("DefaultConnection")
-            );
+            using IDbConnection connection = new SqlConnection(Startup.GetConnectionString());
             
             string sql = @"SELECT Apartments.*,
                                   Kinds.*,

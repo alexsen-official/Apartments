@@ -9,17 +9,16 @@ namespace Apartment.Business.Services
 {
     public class ApartmentService : IApartmentService
     {
-        private readonly EFApartmentsContext _context;
+        private readonly IApartmentRepository _apartmentRepository;
 
-        public ApartmentService(EFApartmentsContext context)
+        public ApartmentService(IApartmentRepository apartmentRepository)
         {
-            _context = context;
+            _apartmentRepository = apartmentRepository;
         }
         
         public ApartmentViewModel GetApartmentById(int id)
         {
-            ApartmentRepository apartmentRepository = new(_context);
-            EFData.Entities.Apartment apartment = apartmentRepository.GetApartmentById(id);
+            EFData.Entities.Apartment apartment = _apartmentRepository.GetApartmentById(id);
             
             KindViewItem kindViewItem = null;
             AddressViewItem addressViewItem = null;

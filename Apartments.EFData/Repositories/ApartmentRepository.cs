@@ -1,11 +1,10 @@
 using System.Linq;
 using EFData.Entities;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace EFData.Repositories
 {
-    public class ApartmentRepository
+    public class ApartmentRepository : IApartmentRepository
     {
         private readonly EFApartmentsContext _context;
 

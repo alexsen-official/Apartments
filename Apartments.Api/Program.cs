@@ -1,27 +1,17 @@
-using Apartment.Business.Services;
-using Apartment.Business.Services.Interfaces;
-using EFData;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace Apartments
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
 
-builder.Services.AddControllers();
-
-builder.Services.AddDbContext<EFApartmentsContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("EFDefaultConnection")
-));
-
-builder.Services.AddScoped<IApartmentService, ApartmentService>();
-
-WebApplication app = builder.Build();
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+    }
+}

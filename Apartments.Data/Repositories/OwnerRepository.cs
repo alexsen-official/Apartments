@@ -1,25 +1,15 @@
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Apartments.Data.Entities;
 
 namespace Apartments.Data.Repositories
 {
     public class OwnerRepository
     {
-        private readonly IConfiguration _config;
-
-        public OwnerRepository(IConfiguration config)
-        {
-            _config = config;
-        }
-
         public Owner GetOwnerById(int id)
         {
-            using IDbConnection connection = new SqlConnection(
-                _config.GetConnectionString("DefaultConnection")
-            );
+            using IDbConnection connection = new SqlConnection(Startup.GetConnectionString());
 
             string sql = @"SELECT TOP(1) *
                            FROM Owners

@@ -5,10 +5,17 @@ namespace EFData
 {
     public class EFApartmentsContext : DbContext
     {
-        public EFApartmentsContext(DbContextOptions<EFApartmentsContext> options) : base(options)
+        private readonly string _connectionString;
+        public EFApartmentsContext()
         {
-
+            _connectionString = Startup.GetConnectionString();
         }
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_connectionString);
+        }
+
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Kind> Kinds { get; set; }
         public DbSet<Address> Addresses { get; set; }
