@@ -31,7 +31,73 @@ namespace Apartment.Business.Services
 
         public OwnerViewItem GetOwnerById(int id)
         {
-            return GetOwners().FirstOrDefault();
+            Owner owner = _ownerRepository.GetOwnerById(id);
+            
+            return new OwnerViewItem 
+            {
+                Id = owner.Id,
+                FirstName = owner.FirstName,
+                LastName = owner.LastName,
+                PhoneNumber = owner.PhoneNumber
+            };
+        }
+        
+        public IEnumerable<OwnerViewItem> CreateOwner(OwnerViewItem ownerViewItem)
+        {
+            Owner owner = new()
+            {
+                Id = ownerViewItem.Id,
+                FirstName = ownerViewItem.FirstName,
+                LastName = ownerViewItem.LastName,
+                PhoneNumber = ownerViewItem.PhoneNumber
+            };
+            
+            IEnumerable<Owner> owners = _ownerRepository.CreateOwner(owner);
+            
+            return owners.Select(o => 
+                new OwnerViewItem 
+                {
+                    Id = o.Id,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    PhoneNumber = o.PhoneNumber
+                });
+        }
+        
+        public IEnumerable<OwnerViewItem> UpdateOwner(OwnerViewItem ownerViewItem)
+        {
+            Owner owner = new()
+            {
+                Id = ownerViewItem.Id,
+                FirstName = ownerViewItem.FirstName,
+                LastName = ownerViewItem.LastName,
+                PhoneNumber = ownerViewItem.PhoneNumber
+            };
+            
+            IEnumerable<Owner> owners = _ownerRepository.UpdateOwner(owner);
+            
+            return owners.Select(o => 
+                new OwnerViewItem 
+                {
+                    Id = o.Id,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    PhoneNumber = o.PhoneNumber
+                });
+        }
+        
+        public IEnumerable<OwnerViewItem> DeleteOwner(int id)
+        {
+            IEnumerable<Owner> owners = _ownerRepository.DeleteOwner(id);
+            
+            return owners.Select(o => 
+                new OwnerViewItem 
+                {
+                    Id = o.Id,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    PhoneNumber = o.PhoneNumber
+                });
         }
     }
 }

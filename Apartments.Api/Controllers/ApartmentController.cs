@@ -1,4 +1,5 @@
 using Apartment.Business.Interfaces;
+using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Apartments.Controllers
@@ -24,6 +25,24 @@ namespace Apartments.Controllers
         public IActionResult GetApartmentById(int id)
         {
             return Ok(_apartmentService.GetApartmentById(id));
+        }
+        
+        [HttpPost]
+        public IActionResult CreateApartment(ApartmentViewModel apartmentViewModel)
+        {
+            return Ok(_apartmentService.CreateApartment(apartmentViewModel));
+        }
+        
+        [HttpPut]
+        public IActionResult UpdateApartment(ApartmentViewModel apartmentViewModel)
+        {
+            return Ok(_apartmentService.UpdateApartment(apartmentViewModel));
+        }
+        
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteApartment(int id)
+        {
+            return Ok(_apartmentService.DeleteApartment(id));
         }
     }
 }

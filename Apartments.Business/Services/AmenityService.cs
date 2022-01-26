@@ -30,7 +30,61 @@ namespace Apartment.Business.Services
 
         public AmenityViewItem GetAmenityById(int id)
         {
-            return GetAmenities().FirstOrDefault();
+            Amenity amenity = _amenityRepository.GetAmenityById(id);
+            
+            return new AmenityViewItem 
+            {
+                Id = amenity.Id,
+                Name = amenity.Name
+            };
+        }
+        
+        public IEnumerable<AmenityViewItem> CreateAmenity(AmenityViewItem amenityViewItem)
+        {
+            Amenity amenity = new()
+            {
+                Id = amenityViewItem.Id,
+                Name = amenityViewItem.Name
+            };
+            
+            IEnumerable<Amenity> amenities = _amenityRepository.CreateAmenity(amenity);
+            
+            return amenities.Select(a => 
+                new AmenityViewItem() 
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                });
+        }
+        
+        public IEnumerable<AmenityViewItem> UpdateAmenity(AmenityViewItem amenityViewItem)
+        {
+            Amenity amenity = new()
+            {
+                Id = amenityViewItem.Id,
+                Name = amenityViewItem.Name
+            };
+            
+            IEnumerable<Amenity> amenities = _amenityRepository.UpdateAmenity(amenity);
+            
+            return amenities.Select(a => 
+                new AmenityViewItem
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                });
+        }
+        
+        public IEnumerable<AmenityViewItem> DeleteAmenity(int id)
+        {
+            IEnumerable<Amenity> amenities = _amenityRepository.DeleteAmenity(id);
+            
+            return amenities.Select(a => 
+                new AmenityViewItem() 
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                });
         }
     }
 }

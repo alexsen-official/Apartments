@@ -7,5 +7,8 @@ namespace Apartment.Business.Interfaces
     {
         public IEnumerable<OwnerViewItem> GetOwners();
         public OwnerViewItem GetOwnerById(int id);
+        public IEnumerable<OwnerViewItem> CreateOwner(OwnerViewItem ownerViewItem);
+        public IEnumerable<OwnerViewItem> UpdateOwner(OwnerViewItem ownerViewItem);
+        public IEnumerable<OwnerViewItem> DeleteOwner(int id);
     }
 }

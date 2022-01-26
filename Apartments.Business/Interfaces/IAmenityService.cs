@@ -7,5 +7,8 @@ namespace Apartment.Business.Interfaces
     {
         public IEnumerable<AmenityViewItem> GetAmenities();
         public AmenityViewItem GetAmenityById(int id);
+        public IEnumerable<AmenityViewItem> CreateAmenity(AmenityViewItem amenityViewItem);
+        public IEnumerable<AmenityViewItem> UpdateAmenity(AmenityViewItem amenityViewItem);
+        public IEnumerable<AmenityViewItem> DeleteAmenity(int id);
     }
 }

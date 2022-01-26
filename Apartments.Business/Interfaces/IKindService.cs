@@ -7,5 +7,8 @@ namespace Apartment.Business.Interfaces
     {
         public IEnumerable<KindViewItem> GetKinds();
         public KindViewItem GetKindById(int id);
+        public IEnumerable<KindViewItem> CreateKind(KindViewItem kindViewItem);
+        public IEnumerable<KindViewItem> UpdateKind(KindViewItem kindViewItem);
+        public IEnumerable<KindViewItem> DeleteKind(int id);
     }
 }

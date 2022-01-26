@@ -1,4 +1,5 @@
 using Apartment.Business.Interfaces;
+using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Apartments.Controllers
@@ -23,6 +24,24 @@ namespace Apartments.Controllers
         public IActionResult GetKindById(int id)
         {
             return Ok(_kindService.GetKindById(id));
+        }
+        
+        [HttpPost]
+        public IActionResult CreateKind(KindViewItem kindViewItem)
+        {
+            return Ok(_kindService.CreateKind(kindViewItem));
+        }
+        
+        [HttpPut]
+        public IActionResult UpdateKind(KindViewItem kindViewItem)
+        {
+            return Ok(_kindService.UpdateKind(kindViewItem));
+        }
+        
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteKind(int id)
+        {
+            return Ok(_kindService.DeleteKind(id));
         }
     }
 }

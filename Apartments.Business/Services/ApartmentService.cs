@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
+using EfData.Entities;
 using EfData.Interfaces;
 
 namespace Apartment.Business.Services
@@ -102,7 +103,161 @@ namespace Apartment.Business.Services
         
         public ApartmentViewModel GetApartmentById(int id)
         {
-            return GetApartments().FirstOrDefault();
+            return GetApartments().FirstOrDefault(apartment => apartment.Id == id);
+        }
+        
+        public IEnumerable<ApartmentViewModel> CreateApartment(ApartmentViewModel apartmentViewModel)
+        {
+            Kind kind = null;
+            Address address = null;
+            Owner owner = null;
+            Provider provider = null;
+            List<Amenity> amenities = new();
+            
+            if (apartmentViewModel.Kind != null)
+            {
+                kind = new Kind
+                {
+                    Id = apartmentViewModel.Kind.Id,
+                    Name = apartmentViewModel.Kind.Name
+                };
+            }
+            
+            if (apartmentViewModel.Address != null)
+            {
+                address = new Address
+                {
+                    Id = apartmentViewModel.Address.Id,
+                    StreetName = apartmentViewModel.Address.StreetName,
+                    HouseNumber = apartmentViewModel.Address.HouseNumber,
+                    FlatNumber = apartmentViewModel.Address.FlatNumber
+                };
+            }
+
+            if (apartmentViewModel.Owner != null)
+            {
+                owner = new Owner
+                {
+                    Id = apartmentViewModel.Owner.Id,
+                    FirstName = apartmentViewModel.Owner.FirstName,
+                    LastName = apartmentViewModel.Owner.LastName,
+                    PhoneNumber = apartmentViewModel.Owner.PhoneNumber
+                };
+            }
+
+            if (apartmentViewModel.Provider != null)
+            {
+                provider = new Provider
+                {
+                    Id = apartmentViewModel.Provider.Id,
+                    Name = apartmentViewModel.Provider.Name
+                };
+            }
+            
+            amenities.AddRange(
+                apartmentViewModel.Amenities
+                    .Select(amenity =>
+                        new Amenity
+                        {
+                            Id = amenity.Id,
+                            Name = amenity.Name
+                        })
+            );
+            
+            EfData.Entities.Apartment apartment = new()
+            {
+                Id = apartmentViewModel.Id,
+                Kind = kind,
+                Address = address,
+                Owner = owner,
+                Provider = provider,
+                Amenities = amenities,
+                PetsAllowed = apartmentViewModel.PetsAllowed,
+                Price = apartmentViewModel.Price
+            };
+            
+            _apartmentRepository.CreateApartment(apartment);
+            return GetApartments();
+        }
+        
+        public IEnumerable<ApartmentViewModel> UpdateApartment(ApartmentViewModel apartmentViewModel)
+        {
+            Kind kind = null;
+            Address address = null;
+            Owner owner = null;
+            Provider provider = null;
+            List<Amenity> amenities = new();
+            
+            if (apartmentViewModel.Kind != null)
+            {
+                kind = new Kind
+                {
+                    Id = apartmentViewModel.Kind.Id,
+                    Name = apartmentViewModel.Kind.Name
+                };
+            }
+            
+            if (apartmentViewModel.Address != null)
+            {
+                address = new Address
+                {
+                    Id = apartmentViewModel.Address.Id,
+                    StreetName = apartmentViewModel.Address.StreetName,
+                    HouseNumber = apartmentViewModel.Address.HouseNumber,
+                    FlatNumber = apartmentViewModel.Address.FlatNumber
+                };
+            }
+
+            if (apartmentViewModel.Owner != null)
+            {
+                owner = new Owner
+                {
+                    Id = apartmentViewModel.Owner.Id,
+                    FirstName = apartmentViewModel.Owner.FirstName,
+                    LastName = apartmentViewModel.Owner.LastName,
+                    PhoneNumber = apartmentViewModel.Owner.PhoneNumber
+                };
+            }
+
+            if (apartmentViewModel.Provider != null)
+            {
+                provider = new Provider
+                {
+                    Id = apartmentViewModel.Provider.Id,
+                    Name = apartmentViewModel.Provider.Name
+                };
+            }
+            
+            amenities.AddRange(
+                apartmentViewModel.Amenities
+                    .Select(amenity =>
+                        new Amenity
+                        {
+                            Id = amenity.Id,
+                            Name = amenity.Name
+                        })
+            );
+            
+            EfData.Entities.Apartment apartment = new()
+            {
+                Id = apartmentViewModel.Id,
+                Kind = kind,
+                Address = address,
+                Owner = owner,
+                Provider = provider,
+                Amenities = amenities,
+                PetsAllowed = apartmentViewModel.PetsAllowed,
+                Price = apartmentViewModel.Price
+            };
+            
+            _apartmentRepository.UpdateApartment(apartment);
+            return GetApartments();
+        }
+        
+        public IEnumerable<ApartmentViewModel> DeleteApartment(int id)
+        {
+            _apartmentRepository.DeleteApartment(id);
+            return GetApartments();
         }
     }
 }

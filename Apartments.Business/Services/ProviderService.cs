@@ -27,10 +27,64 @@ namespace Apartment.Business.Services
                     Name = provider.Name
                 });
         }
-
+        
         public ProviderViewItem GetProviderById(int id)
         {
-            return GetProviders().FirstOrDefault();
+            Provider provider = _providerRepository.GetProviderById(id);
+            
+            return new ProviderViewItem 
+            {
+                Id = provider.Id,
+                Name = provider.Name
+            };
+        }
+
+        public IEnumerable<ProviderViewItem> CreateProvider(ProviderViewItem providerViewItem)
+        {
+            Provider provider = new()
+            {
+                Id = providerViewItem.Id,
+                Name = providerViewItem.Name
+            };
+            
+            IEnumerable<Provider> providers = _providerRepository.CreateProvider(provider);
+            
+            return providers.Select(p => 
+                new ProviderViewItem 
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                });
+        }
+        
+        public IEnumerable<ProviderViewItem> UpdateProvider(ProviderViewItem providerViewItem)
+        {
+            Provider provider = new()
+            {
+                Id = providerViewItem.Id,
+                Name = providerViewItem.Name
+            };
+            
+            IEnumerable<Provider> providers = _providerRepository.UpdateProvider(provider);
+            
+            return providers.Select(p => 
+                new ProviderViewItem 
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                });
+        }
+        
+        public IEnumerable<ProviderViewItem> DeleteProvider(int id)
+        {
+            IEnumerable<Provider> providers = _providerRepository.DeleteProvider(id);
+            
+            return providers.Select(p => 
+                new ProviderViewItem 
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                });
         }
     }
 }

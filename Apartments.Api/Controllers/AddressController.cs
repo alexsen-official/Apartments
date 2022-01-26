@@ -1,4 +1,5 @@
 using Apartment.Business.Interfaces;
+using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Apartments.Controllers
@@ -20,9 +21,27 @@ namespace Apartments.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetApartmentById(int id)
+        public IActionResult GetAddressesById(int id)
         {
             return Ok(_addressService.GetAddressById(id));
+        }
+        
+        [HttpPost]
+        public IActionResult CreateAddress(AddressViewItem addressViewItem)
+        {
+            return Ok(_addressService.CreateAddress(addressViewItem));
+        }
+        
+        [HttpPut]
+        public IActionResult UpdateAddress(AddressViewItem addressViewItem)
+        {
+            return Ok(_addressService.UpdateAddress(addressViewItem));
+        }
+        
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteAddress(int id)
+        {
+            return Ok(_addressService.DeleteAddress(id));
         }
     }
 }

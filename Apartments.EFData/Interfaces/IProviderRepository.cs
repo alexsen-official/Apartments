@@ -7,5 +7,8 @@ namespace EfData.Interfaces
     {
         public IEnumerable<Provider> GetProviders();
         public Provider GetProviderById(int id);
+        public IEnumerable<Provider> CreateProvider(Provider provider);
+        public IEnumerable<Provider> UpdateProvider(Provider provider);
+        public IEnumerable<Provider> DeleteProvider(int id);
     }
 }

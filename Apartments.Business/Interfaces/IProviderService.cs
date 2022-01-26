@@ -7,5 +7,8 @@ namespace Apartment.Business.Interfaces
     {
         public IEnumerable<ProviderViewItem> GetProviders();
         public ProviderViewItem GetProviderById(int id);
+        public IEnumerable<ProviderViewItem> CreateProvider(ProviderViewItem providerViewItem);
+        public IEnumerable<ProviderViewItem> UpdateProvider(ProviderViewItem providerViewItem);
+        public IEnumerable<ProviderViewItem> DeleteProvider(int id);
     }
 }

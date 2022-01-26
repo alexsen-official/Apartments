@@ -29,5 +29,47 @@ namespace EfData.Repositories
         {
             return GetApartments().FirstOrDefault(apartment => apartment.Id == id);
         }
+        
+        public IEnumerable<Apartment> CreateApartment(Apartment apartment)
+        {
+            _context.Apartments.Add(apartment);
+            _context.SaveChanges();
+
+            return GetApartments();
+        }
+        
+        public IEnumerable<Apartment> UpdateApartment(Apartment apartment)
+        {
+            Apartment dbApartment = _context.Apartments.Find(apartment.Id);
+
+            if (dbApartment != null)
+            {
+                dbApartment.Address = apartment.Address;
+                dbApartment.AddressId = dbApartment.AddressId;
+                dbApartment.Amenities = apartment.Amenities;
+                dbApartment.Kind = apartment.Kind;
+                dbApartment.Owner = apartment.Owner;
+                dbApartment.Price = apartment.Price;
+                dbApartment.Provider = apartment.Provider;
+                dbApartment.PetsAllowed = apartment.PetsAllowed;
+
+                _context.SaveChanges();
+            }
+
+            return GetApartments();
+        }
+        
+        public IEnumerable<Apartment> DeleteApartment(int id)
+        {
+            Apartment dbApartment = GetApartmentById(id);
+
+            if (dbApartment != null)
+            {
+                _context.Apartments.Remove(dbApartment);
+                _context.SaveChanges();
+            }
+
+            return GetApartments();
+        }
     }
 }

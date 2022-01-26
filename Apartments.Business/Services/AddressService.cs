@@ -32,7 +32,73 @@ namespace Apartment.Business.Services
 
         public AddressViewItem GetAddressById(int id)
         {
-            return GetAddresses().FirstOrDefault();
+            Address address = _addressRepository.GetAddressById(id);
+            
+            return new AddressViewItem 
+            {
+                Id = address.Id,
+                StreetName = address.StreetName,
+                HouseNumber = address.HouseNumber,
+                FlatNumber = address.FlatNumber
+            };
+        }
+
+        public IEnumerable<AddressViewItem> CreateAddress(AddressViewItem addressViewItem)
+        {
+            Address address = new()
+            {
+                Id = addressViewItem.Id,
+                HouseNumber = addressViewItem.HouseNumber,
+                FlatNumber = addressViewItem.FlatNumber,
+                StreetName = addressViewItem.StreetName
+            };
+            
+            IEnumerable<Address> addresses = _addressRepository.CreateAddress(address);
+            
+            return addresses.Select(a => 
+                new AddressViewItem 
+                {
+                    Id = a.Id,
+                    StreetName = a.StreetName,
+                    HouseNumber = a.HouseNumber,
+                    FlatNumber = a.FlatNumber
+                });
+        }
+        
+        public IEnumerable<AddressViewItem> UpdateAddress(AddressViewItem addressViewItem)
+        {
+            Address address = new()
+            {
+                Id = addressViewItem.Id,
+                HouseNumber = addressViewItem.HouseNumber,
+                FlatNumber = addressViewItem.FlatNumber,
+                StreetName = addressViewItem.StreetName
+            };
+
+            IEnumerable<Address> addresses = _addressRepository.UpdateAddress(address);
+            
+            return addresses.Select(a => 
+                new AddressViewItem 
+                {
+                    Id = a.Id,
+                    StreetName = a.StreetName,
+                    HouseNumber = a.HouseNumber,
+                    FlatNumber = a.FlatNumber
+                });
+        }
+        
+        public IEnumerable<AddressViewItem> DeleteAddress(int id)
+        {
+            IEnumerable<Address> addresses = _addressRepository.DeleteAddress(id);
+            
+            return addresses.Select(a => 
+                new AddressViewItem 
+                {
+                    Id = a.Id,
+                    StreetName = a.StreetName,
+                    HouseNumber = a.HouseNumber,
+                    FlatNumber = a.FlatNumber
+                });
         }
     }
 }
