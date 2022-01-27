@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using EfData.Entities;
 using EfData.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfData.Repositories
 {
@@ -13,25 +14,27 @@ namespace EfData.Repositories
         {
             _context = context;
         }
-        public IEnumerable<Provider> GetProviders()
+        public async Task<IEnumerable<Provider>> GetProviders()
         {
-            return _context.Providers;
+            var providers = await _context.Providers.ToListAsync();
+            return providers;
         }
 
-        public Provider GetProviderById(int id)
+        public async Task<Provider> GetProviderById(int id)
         {
-            return _context.Providers.SingleOrDefault(p => p.Id == id);
+            var provider = await _context.Providers.SingleOrDefaultAsync(p => p.Id == id);
+            return provider;
         }
         
-        public void CreateProvider(Provider provider)
+        public async Task CreateProvider(Provider provider)
         {
             _context.Providers.Add(provider);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void UpdateProvider(Provider provider)
+        public async Task UpdateProvider(Provider provider)
         {
-            Provider dbProvider = _context.Providers.SingleOrDefault(p => p.Id == provider.Id);
+            var dbProvider = await _context.Providers.SingleOrDefaultAsync(p => p.Id == provider.Id);
 
             if (dbProvider == null)
             {
@@ -41,12 +44,12 @@ namespace EfData.Repositories
             dbProvider.Name = provider.Name;
             dbProvider.Apartments = provider.Apartments;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void DeleteProvider(int id)
+        public async Task DeleteProvider(int id)
         {
-            Provider dbProvider = _context.Providers.SingleOrDefault(p => p.Id == id);
+            var dbProvider = await _context.Providers.SingleOrDefaultAsync(p => p.Id == id);
 
             if (dbProvider == null)
             {
@@ -54,7 +57,7 @@ namespace EfData.Repositories
             }
             
             _context.Providers.Remove(dbProvider);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

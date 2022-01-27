@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EfData.Entities;
 
 namespace EfData.Interfaces
 {
     public interface IKindRepository
     {
-        public IEnumerable<Kind> GetKinds();
-        public Kind GetKindById(int id);
-        public void CreateKind(Kind kind);
-        public void UpdateKind(Kind kind);
-        public void DeleteKind(int id);
+        public Task<IEnumerable<Kind>> GetKinds();
+        public Task<Kind> GetKindById(int id);
+        public Task CreateKind(Kind kind);
+        public Task UpdateKind(Kind kind);
+        public Task DeleteKind(int id);
     }
 }

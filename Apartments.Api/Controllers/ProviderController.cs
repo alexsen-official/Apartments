@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -16,37 +16,37 @@ namespace Apartments.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProviders()
+        public async Task<IActionResult> GetProviders()
         {
-            IEnumerable<ProviderViewItem> result = _providerService.GetProviders();
+            var result = await _providerService.GetProviders();
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetProviderById(int id)
+        public async Task<IActionResult> GetProviderById(int id)
         {
-            ProviderViewItem result = _providerService.GetProviderById(id);
+            var result = await _providerService.GetProviderById(id);
             return Ok(result);
         }
         
         [HttpPost]
-        public IActionResult CreateProvider(ProviderViewItem providerViewItem)
+        public async Task<IActionResult> CreateProvider(ProviderViewItem providerViewItem)
         {
-            IEnumerable<ProviderViewItem> result = _providerService.CreateProvider(providerViewItem);
+            var result = await _providerService.CreateProvider(providerViewItem);
             return Ok(result);
         }
         
         [HttpPut]
-        public IActionResult UpdateProvider(ProviderViewItem providerViewItem)
+        public async Task<IActionResult> UpdateProvider(ProviderViewItem providerViewItem)
         {
-            IEnumerable<ProviderViewItem> result = _providerService.UpdateProvider(providerViewItem);
+            var result = await _providerService.UpdateProvider(providerViewItem);
             return Ok(result);
         }
         
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteProvider(int id)
+        public async Task<IActionResult> DeleteProvider(int id)
         {
-            IEnumerable<ProviderViewItem> result = _providerService.DeleteProvider(id);
+            var result = await _providerService.DeleteProvider(id);
             return Ok(result);
         }
     }

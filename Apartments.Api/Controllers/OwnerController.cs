@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -16,37 +16,37 @@ namespace Apartments.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetOwners()
+        public async Task<IActionResult> GetOwners()
         {
-            IEnumerable<OwnerViewItem> result = _ownerService.GetOwners();
+            var result = await _ownerService.GetOwners();
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetOwnerById(int id)
+        public async Task<IActionResult> GetOwnerById(int id)
         {
-            OwnerViewItem result = _ownerService.GetOwnerById(id);
+            var result = await _ownerService.GetOwnerById(id);
             return Ok(result);
         }
         
         [HttpPost]
-        public IActionResult CreateOwner(OwnerViewItem ownerViewItem)
+        public async Task<IActionResult> CreateOwner(OwnerViewItem ownerViewItem)
         {
-            IEnumerable<OwnerViewItem> result = _ownerService.CreateOwner(ownerViewItem);
+            var result = await _ownerService.CreateOwner(ownerViewItem);
             return Ok(result);
         }
         
         [HttpPut]
-        public IActionResult UpdateOwner(OwnerViewItem ownerViewItem)
+        public async Task<IActionResult> UpdateOwner(OwnerViewItem ownerViewItem)
         {
-            IEnumerable<OwnerViewItem> result = _ownerService.UpdateOwner(ownerViewItem);
+            var result = await _ownerService.UpdateOwner(ownerViewItem);
             return Ok(result);
         }
         
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteOwner(int id)
+        public async Task<IActionResult> DeleteOwner(int id)
         {
-            IEnumerable<OwnerViewItem> result = _ownerService.DeleteOwner(id);
+            var result = await _ownerService.DeleteOwner(id);
             return Ok(result);
         }
     }

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using EfData.Entities;
 using EfData.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfData.Repositories
 {
@@ -14,25 +15,27 @@ namespace EfData.Repositories
             _context = context;
         }
 
-        public IEnumerable<Owner> GetOwners()
+        public async Task<IEnumerable<Owner>> GetOwners()
         {
-            return _context.Owners;
+            var owners = await _context.Owners.ToListAsync();
+            return owners;
         }
 
-        public Owner GetOwnerById(int id)
+        public async Task<Owner> GetOwnerById(int id)
         {
-            return _context.Owners.SingleOrDefault(o => o.Id == id);
+            var owner = await _context.Owners.SingleOrDefaultAsync(o => o.Id == id);
+            return owner;
         }
         
-        public void CreateOwner(Owner owner)
+        public async Task CreateOwner(Owner owner)
         {
             _context.Owners.Add(owner);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void UpdateOwner(Owner owner)
+        public async Task UpdateOwner(Owner owner)
         {
-            Owner dbOwner = _context.Owners.SingleOrDefault(o => o.Id == owner.Id);
+            var dbOwner = await _context.Owners.SingleOrDefaultAsync(o => o.Id == owner.Id);
 
             if (dbOwner == null)
             {
@@ -44,12 +47,12 @@ namespace EfData.Repositories
             dbOwner.PhoneNumber = owner.PhoneNumber;
             dbOwner.Apartments = dbOwner.Apartments;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void DeleteOwner(int id)
+        public async Task DeleteOwner(int id)
         {
-            Owner dbOwner =_context.Owners.SingleOrDefault(o => o.Id == id);
+            var dbOwner = await _context.Owners.SingleOrDefaultAsync(o => o.Id == id);
 
             if (dbOwner == null)
             {
@@ -57,7 +60,7 @@ namespace EfData.Repositories
             }
             
             _context.Owners.Remove(dbOwner);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using EfData.Entities;
 using EfData.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfData.Repositories
 {
@@ -14,25 +15,27 @@ namespace EfData.Repositories
             _context = context;
         }
         
-        public IEnumerable<Address> GetAddresses()
+        public async Task<IEnumerable<Address>> GetAddresses()
         {
-            return _context.Addresses;
+            IEnumerable<Address> addresses = await _context.Addresses.ToListAsync();
+            return addresses;
         }
 
-        public Address GetAddressById(int id)
+        public async Task<Address> GetAddressById(int id)
         {
-            return _context.Addresses.SingleOrDefault(a => a.Id == id);
+            var address = await _context.Addresses.SingleOrDefaultAsync(a => a.Id == id);
+            return address;
         }
 
-        public void CreateAddress(Address address)
+        public async Task CreateAddress(Address address)
         {
             _context.Addresses.Add(address);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateAddress(Address address)
+        public async Task UpdateAddress(Address address)
         {
-            Address dbAddress = _context.Addresses.SingleOrDefault(a => a.Id == address.Id);
+            var dbAddress = await _context.Addresses.SingleOrDefaultAsync(a => a.Id == address.Id);
 
             if (dbAddress == null)
             {
@@ -44,12 +47,12 @@ namespace EfData.Repositories
             dbAddress.StreetName = address.StreetName;
             dbAddress.Apartment = address.Apartment;
                 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void DeleteAddress(int id)
+        public async Task DeleteAddress(int id)
         {
-            Address dbAddress = _context.Addresses.SingleOrDefault(a => a.Id == id);
+            var dbAddress = await _context.Addresses.SingleOrDefaultAsync(a => a.Id == id);
 
             if (dbAddress == null)
             {
@@ -57,7 +60,7 @@ namespace EfData.Repositories
             }
             
             _context.Addresses.Remove(dbAddress);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

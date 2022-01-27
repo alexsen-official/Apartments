@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -17,37 +17,37 @@ namespace Apartments.Controllers
         }
         
         [HttpGet]
-        public IActionResult GetApartments()
+        public async Task<IActionResult> GetApartments()
         {
-            IEnumerable<ApartmentViewModel> result = _apartmentService.GetApartments();
+            var result = await _apartmentService.GetApartments();
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetApartmentById(int id)
+        public async Task<IActionResult> GetApartmentById(int id)
         {
-            ApartmentViewModel result = _apartmentService.GetApartmentById(id);
+            var result = await _apartmentService.GetApartmentById(id);
             return Ok(result);
         }
         
         [HttpPost]
-        public IActionResult CreateApartment(ApartmentViewModel apartmentViewModel)
+        public async Task<IActionResult> CreateApartment(ApartmentViewModel apartmentViewModel)
         {
-            IEnumerable<ApartmentViewModel> result = _apartmentService.CreateApartment(apartmentViewModel);
+            var result = await _apartmentService.CreateApartment(apartmentViewModel);
             return Ok(result);
         }
         
         [HttpPut]
-        public IActionResult UpdateApartment(ApartmentViewModel apartmentViewModel)
+        public async Task<IActionResult> UpdateApartment(ApartmentViewModel apartmentViewModel)
         {
-            IEnumerable<ApartmentViewModel> result = _apartmentService.UpdateApartment(apartmentViewModel);
+            var result = await _apartmentService.UpdateApartment(apartmentViewModel);
             return Ok(result);
         }
         
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteApartment(int id)
+        public async Task<IActionResult> DeleteApartment(int id)
         {
-            IEnumerable<ApartmentViewModel> result = _apartmentService.DeleteApartment(id);
+            var result = await _apartmentService.DeleteApartment(id);
             return Ok(result);
         }
     }

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using EfData.Entities;
 using EfData.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfData.Repositories
 {
@@ -14,25 +15,27 @@ namespace EfData.Repositories
             _context = context;
         }
         
-        public IEnumerable<Kind> GetKinds()
+        public async Task<IEnumerable<Kind>> GetKinds()
         {
-            return _context.Kinds;
+            var kinds = await _context.Kinds.ToListAsync();
+            return kinds;
         }
 
-        public Kind GetKindById(int id)
+        public async Task<Kind> GetKindById(int id)
         {
-            return _context.Kinds.SingleOrDefault(k => k.Id == id);
+            var kind = await _context.Kinds.SingleOrDefaultAsync(k => k.Id == id);
+            return kind;
         }
         
-        public void CreateKind(Kind kind)
+        public async Task CreateKind(Kind kind)
         {
             _context.Kinds.Add(kind);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void UpdateKind(Kind kind)
+        public async Task UpdateKind(Kind kind)
         {
-            Kind dbKind = _context.Kinds.SingleOrDefault(k => k.Id == kind.Id);
+            var dbKind = await _context.Kinds.SingleOrDefaultAsync(k => k.Id == kind.Id);
 
             if (dbKind == null)
             {
@@ -42,12 +45,12 @@ namespace EfData.Repositories
             dbKind.Name = kind.Name;
             dbKind.Apartments = kind.Apartments;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void DeleteKind(int id)
+        public async Task DeleteKind(int id)
         {
-            Kind dbKind = _context.Kinds.SingleOrDefault(k => k.Id == id);
+            var dbKind = await _context.Kinds.SingleOrDefaultAsync(k => k.Id == id);
 
             if (dbKind == null)
             {
@@ -55,7 +58,7 @@ namespace EfData.Repositories
             }
 
             _context.Kinds.Remove(dbKind);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

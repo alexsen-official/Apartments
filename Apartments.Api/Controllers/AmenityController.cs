@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -16,37 +16,37 @@ namespace Apartments.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAmenities()
+        public async Task<IActionResult> GetAmenities()
         {
-            IEnumerable<AmenityViewItem> result = _amenityService.GetAmenities();
+            var result = await _amenityService.GetAmenities();
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetAmenityById(int id)
+        public async Task<IActionResult> GetAmenityById(int id)
         {
-            AmenityViewItem result = _amenityService.GetAmenityById(id);
+            var result = await _amenityService.GetAmenityById(id);
             return Ok(result);
         }
         
         [HttpPost]
-        public IActionResult CreateAmenity(AmenityViewItem amenityViewItem)
+        public async Task<IActionResult> CreateAmenity(AmenityViewItem amenityViewItem)
         {
-            IEnumerable<AmenityViewItem> result = _amenityService.CreateAmenity(amenityViewItem);
+            var result = await _amenityService.CreateAmenity(amenityViewItem);
             return Ok(result);
         }
         
         [HttpPut]
-        public IActionResult UpdateAmenity(AmenityViewItem amenityViewItem)
+        public async Task<IActionResult> UpdateAmenity(AmenityViewItem amenityViewItem)
         {
-            IEnumerable<AmenityViewItem> result = _amenityService.UpdateAmenity(amenityViewItem);
+            var result = await _amenityService.UpdateAmenity(amenityViewItem);
             return Ok(result);
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteAmenity(int id)
+        public async Task<IActionResult> DeleteAmenity(int id)
         {
-            IEnumerable<AmenityViewItem> result = _amenityService.DeleteAmenity(id);
+            var result = await _amenityService.DeleteAmenity(id);
             return Ok(result);
         }
     }

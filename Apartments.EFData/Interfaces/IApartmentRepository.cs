@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EfData.Entities;
 
 namespace EfData.Interfaces
 {
     public interface IApartmentRepository
     {
-        public IEnumerable<Apartment> GetApartments();
-        public Apartment GetApartmentById(int id);
-        public void CreateApartment(Apartment apartment);
-        public void UpdateApartment(Apartment apartment);
-        public void DeleteApartment(int id);
+        public Task<IEnumerable<Apartment>> GetApartments();
+        public Task<Apartment> GetApartmentById(int id);
+        public Task CreateApartment(Apartment apartment);
+        public Task UpdateApartment(Apartment apartment);
+        public Task DeleteApartment(int id);
     }
 }

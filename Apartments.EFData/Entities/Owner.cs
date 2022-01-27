@@ -10,5 +10,10 @@ namespace EfData.Entities
         public string PhoneNumber { get; set; }
         
         public List<Apartment> Apartments { get; set; }
+
+        public Owner()
+        {
+            Apartments = new List<Apartment>();
+        }
     }
 }

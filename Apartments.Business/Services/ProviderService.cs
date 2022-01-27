@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using EfData.Entities;
@@ -16,9 +17,9 @@ namespace Apartment.Business.Services
             _providerRepository = providerRepository;
         }
         
-        public IEnumerable<ProviderViewItem> GetProviders()
+        public async Task<IEnumerable<ProviderViewItem>> GetProviders()
         {
-            IEnumerable<Provider> providers = _providerRepository.GetProviders();
+            var providers = await _providerRepository.GetProviders();
 
             return providers.Select(provider => 
                 new ProviderViewItem 
@@ -28,9 +29,9 @@ namespace Apartment.Business.Services
                 });
         }
         
-        public ProviderViewItem GetProviderById(int id)
+        public async Task<ProviderViewItem> GetProviderById(int id)
         {
-            Provider provider = _providerRepository.GetProviderById(id);
+            var provider = await _providerRepository.GetProviderById(id);
             
             return new ProviderViewItem 
             {
@@ -39,7 +40,7 @@ namespace Apartment.Business.Services
             };
         }
 
-        public IEnumerable<ProviderViewItem> CreateProvider(ProviderViewItem providerViewItem)
+        public async Task<IEnumerable<ProviderViewItem>> CreateProvider(ProviderViewItem providerViewItem)
         {
             Provider provider = new()
             {
@@ -47,11 +48,11 @@ namespace Apartment.Business.Services
                 Name = providerViewItem.Name
             };
             
-            _providerRepository.CreateProvider(provider);
-            return GetProviders();
+            await _providerRepository.CreateProvider(provider);
+            return await GetProviders();
         }
         
-        public IEnumerable<ProviderViewItem> UpdateProvider(ProviderViewItem providerViewItem)
+        public async Task<IEnumerable<ProviderViewItem>> UpdateProvider(ProviderViewItem providerViewItem)
         {
             Provider provider = new()
             {
@@ -59,14 +60,14 @@ namespace Apartment.Business.Services
                 Name = providerViewItem.Name
             };
             
-            _providerRepository.UpdateProvider(provider);
-            return GetProviders();
+            await _providerRepository.UpdateProvider(provider);
+            return await GetProviders();
         }
         
-        public IEnumerable<ProviderViewItem> DeleteProvider(int id)
+        public async Task<IEnumerable<ProviderViewItem>> DeleteProvider(int id)
         {
-            _providerRepository.DeleteProvider(id);
-            return GetProviders();
+            await _providerRepository.DeleteProvider(id);
+            return await GetProviders();
         }
     }
 }

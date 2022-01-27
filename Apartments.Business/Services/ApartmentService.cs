@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using EfData.Entities;
@@ -16,9 +17,9 @@ namespace Apartment.Business.Services
             _apartmentRepository = apartmentRepository;
         }
 
-        public IEnumerable<ApartmentViewModel> GetApartments()
+        public async Task<IEnumerable<ApartmentViewModel>> GetApartments()
         {
-            List<EfData.Entities.Apartment> apartments = _apartmentRepository.GetApartments().ToList();
+            var apartments = await _apartmentRepository.GetApartments();
             List<ApartmentViewModel> apartmentViewModels = new();
             
             foreach (var apartment in apartments)
@@ -101,9 +102,9 @@ namespace Apartment.Business.Services
             return apartmentViewModels;
         }
         
-        public ApartmentViewModel GetApartmentById(int id)
+        public async Task<ApartmentViewModel> GetApartmentById(int id)
         {
-            EfData.Entities.Apartment apartment = _apartmentRepository.GetApartmentById(id);
+            var apartment = await _apartmentRepository.GetApartmentById(id);
 
             KindViewItem kindViewItem = null;
             AddressViewItem addressViewItem = null;
@@ -182,7 +183,7 @@ namespace Apartment.Business.Services
             return apartmentViewModel;
         }
         
-        public IEnumerable<ApartmentViewModel> CreateApartment(ApartmentViewModel apartmentViewModel)
+        public async Task<IEnumerable<ApartmentViewModel>> CreateApartment(ApartmentViewModel apartmentViewModel)
         {
             Kind kind = null;
             Address address = null;
@@ -252,11 +253,11 @@ namespace Apartment.Business.Services
                 Price = apartmentViewModel.Price
             };
             
-            _apartmentRepository.CreateApartment(apartment);
-            return GetApartments();
+            await _apartmentRepository.CreateApartment(apartment);
+            return await GetApartments();
         }
         
-        public IEnumerable<ApartmentViewModel> UpdateApartment(ApartmentViewModel apartmentViewModel)
+        public async Task<IEnumerable<ApartmentViewModel>> UpdateApartment(ApartmentViewModel apartmentViewModel)
         {
             Kind kind = null;
             Address address = null;
@@ -326,14 +327,14 @@ namespace Apartment.Business.Services
                 Price = apartmentViewModel.Price
             };
             
-            _apartmentRepository.UpdateApartment(apartment);
-            return GetApartments();
+            await _apartmentRepository.UpdateApartment(apartment);
+            return await GetApartments();
         }
         
-        public IEnumerable<ApartmentViewModel> DeleteApartment(int id)
+        public async Task<IEnumerable<ApartmentViewModel>> DeleteApartment(int id)
         {
-            _apartmentRepository.DeleteApartment(id);
-            return GetApartments();
+            await _apartmentRepository.DeleteApartment(id);
+            return await GetApartments();
         }
     }
 }

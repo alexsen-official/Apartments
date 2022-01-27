@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using EfData.Entities;
@@ -16,9 +17,9 @@ namespace Apartment.Business.Services
             _amenityRepository = amenityRepository;
         }
         
-        public IEnumerable<AmenityViewItem> GetAmenities()
+        public async Task<IEnumerable<AmenityViewItem>> GetAmenities()
         {
-            IEnumerable<Amenity> amenities = _amenityRepository.GetAmenities();
+            var amenities = await _amenityRepository.GetAmenities();
 
             return amenities.Select(amenity => 
                 new AmenityViewItem 
@@ -28,9 +29,9 @@ namespace Apartment.Business.Services
                 });
         }
 
-        public AmenityViewItem GetAmenityById(int id)
+        public async Task<AmenityViewItem> GetAmenityById(int id)
         {
-            Amenity amenity = _amenityRepository.GetAmenityById(id);
+            var amenity = await _amenityRepository.GetAmenityById(id);
             
             return new AmenityViewItem 
             {
@@ -39,7 +40,7 @@ namespace Apartment.Business.Services
             };
         }
         
-        public IEnumerable<AmenityViewItem> CreateAmenity(AmenityViewItem amenityViewItem)
+        public async Task<IEnumerable<AmenityViewItem>> CreateAmenity(AmenityViewItem amenityViewItem)
         {
             Amenity amenity = new()
             {
@@ -47,11 +48,11 @@ namespace Apartment.Business.Services
                 Name = amenityViewItem.Name
             };
             
-            _amenityRepository.CreateAmenity(amenity);
-            return GetAmenities();
+            await _amenityRepository.CreateAmenity(amenity);
+            return await GetAmenities();
         }
         
-        public IEnumerable<AmenityViewItem> UpdateAmenity(AmenityViewItem amenityViewItem)
+        public async Task<IEnumerable<AmenityViewItem>> UpdateAmenity(AmenityViewItem amenityViewItem)
         {
             Amenity amenity = new()
             {
@@ -59,14 +60,14 @@ namespace Apartment.Business.Services
                 Name = amenityViewItem.Name
             };
             
-            _amenityRepository.UpdateAmenity(amenity);
-            return GetAmenities();
+            await _amenityRepository.UpdateAmenity(amenity);
+            return await GetAmenities();
         }
         
-        public IEnumerable<AmenityViewItem> DeleteAmenity(int id)
+        public async Task<IEnumerable<AmenityViewItem>> DeleteAmenity(int id)
         {
-            _amenityRepository.DeleteAmenity(id);
-            return GetAmenities();
+            await _amenityRepository.DeleteAmenity(id);
+            return await GetAmenities();
         }
     }
 }

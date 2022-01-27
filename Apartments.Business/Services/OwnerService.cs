@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using EfData.Entities;
@@ -16,9 +17,9 @@ namespace Apartment.Business.Services
             _ownerRepository = ownerRepository;
         }
         
-        public IEnumerable<OwnerViewItem> GetOwners()
+        public async Task<IEnumerable<OwnerViewItem>> GetOwners()
         {
-            IEnumerable<Owner> owners = _ownerRepository.GetOwners();
+            var owners = await _ownerRepository.GetOwners();
 
             return owners.Select(owner => 
                 new OwnerViewItem 
@@ -29,9 +30,9 @@ namespace Apartment.Business.Services
                 });
         }
 
-        public OwnerViewItem GetOwnerById(int id)
+        public async Task<OwnerViewItem> GetOwnerById(int id)
         {
-            Owner owner = _ownerRepository.GetOwnerById(id);
+            var owner = await _ownerRepository.GetOwnerById(id);
             
             return new OwnerViewItem 
             {
@@ -42,7 +43,7 @@ namespace Apartment.Business.Services
             };
         }
         
-        public IEnumerable<OwnerViewItem> CreateOwner(OwnerViewItem ownerViewItem)
+        public async Task<IEnumerable<OwnerViewItem>> CreateOwner(OwnerViewItem ownerViewItem)
         {
             Owner owner = new()
             {
@@ -52,11 +53,11 @@ namespace Apartment.Business.Services
                 PhoneNumber = ownerViewItem.PhoneNumber
             };
             
-            _ownerRepository.CreateOwner(owner);
-            return GetOwners();
+            await _ownerRepository.CreateOwner(owner);
+            return await GetOwners();
         }
         
-        public IEnumerable<OwnerViewItem> UpdateOwner(OwnerViewItem ownerViewItem)
+        public async Task<IEnumerable<OwnerViewItem>> UpdateOwner(OwnerViewItem ownerViewItem)
         {
             Owner owner = new()
             {
@@ -66,14 +67,14 @@ namespace Apartment.Business.Services
                 PhoneNumber = ownerViewItem.PhoneNumber
             };
             
-            _ownerRepository.UpdateOwner(owner);
-            return GetOwners();
+            await _ownerRepository.UpdateOwner(owner);
+            return await GetOwners();
         }
         
-        public IEnumerable<OwnerViewItem> DeleteOwner(int id)
+        public async Task<IEnumerable<OwnerViewItem>> DeleteOwner(int id)
         {
-            _ownerRepository.DeleteOwner(id);
-            return GetOwners();
+            await _ownerRepository.DeleteOwner(id);
+            return await GetOwners();
         }
     }
 }

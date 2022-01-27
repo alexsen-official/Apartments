@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using EfData.Entities;
 using EfData.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfData.Repositories
 {
@@ -14,25 +15,27 @@ namespace EfData.Repositories
             _context = context;
         }
         
-        public IEnumerable<Amenity> GetAmenities()
+        public async Task<IEnumerable<Amenity>> GetAmenities()
         {
-            return _context.Amenities;
+            var amenities = await _context.Amenities.ToListAsync();
+            return amenities;
         }
 
-        public Amenity GetAmenityById(int id)
+        public async Task<Amenity> GetAmenityById(int id)
         {
-            return _context.Amenities.SingleOrDefault(a => a.Id == id);
+            var amenity = await _context.Amenities.SingleOrDefaultAsync(a => a.Id == id);
+            return amenity;
         }
 
-        public void CreateAmenity(Amenity amenity)
+        public async Task CreateAmenity(Amenity amenity)
         {
             _context.Amenities.Add(amenity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void UpdateAmenity(Amenity amenity)
+        public async Task UpdateAmenity(Amenity amenity)
         {
-            Amenity dbAmenity = _context.Amenities.SingleOrDefault(a => a.Id == amenity.Id);
+            var dbAmenity = await _context.Amenities.SingleOrDefaultAsync(a => a.Id == amenity.Id);
 
             if (dbAmenity == null)
             {
@@ -42,12 +45,12 @@ namespace EfData.Repositories
             dbAmenity.Name = amenity.Name;
             dbAmenity.Apartments = amenity.Apartments;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         
-        public void DeleteAmenity(int id)
+        public async Task DeleteAmenity(int id)
         {
-            Amenity dbAmenity = _context.Amenities.SingleOrDefault(a => a.Id == id);
+            var dbAmenity = await _context.Amenities.SingleOrDefaultAsync(a => a.Id == id);
 
             if (dbAmenity == null)
             {
@@ -55,7 +58,7 @@ namespace EfData.Repositories
             }
             
             _context.Amenities.Remove(dbAmenity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

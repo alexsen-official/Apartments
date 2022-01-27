@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using EfData.Entities;
@@ -16,9 +17,9 @@ namespace Apartment.Business.Services
             _addressRepository = addressRepository;
         }
         
-        public IEnumerable<AddressViewItem> GetAddresses()
+        public async Task<IEnumerable<AddressViewItem>> GetAddresses()
         {
-            IEnumerable<Address> addresses = _addressRepository.GetAddresses();
+            var addresses = await _addressRepository.GetAddresses();
 
             return addresses.Select(address => 
                 new AddressViewItem 
@@ -30,9 +31,9 @@ namespace Apartment.Business.Services
                 });
         }
 
-        public AddressViewItem GetAddressById(int id)
+        public async Task<AddressViewItem> GetAddressById(int id)
         {
-            Address address = _addressRepository.GetAddressById(id);
+            var address = await _addressRepository.GetAddressById(id);
             
             return new AddressViewItem 
             {
@@ -43,7 +44,7 @@ namespace Apartment.Business.Services
             };
         }
 
-        public IEnumerable<AddressViewItem> CreateAddress(AddressViewItem addressViewItem)
+        public async Task<IEnumerable<AddressViewItem>> CreateAddress(AddressViewItem addressViewItem)
         {
             Address address = new()
             {
@@ -53,11 +54,11 @@ namespace Apartment.Business.Services
                 StreetName = addressViewItem.StreetName
             };
             
-            _addressRepository.CreateAddress(address);
-            return GetAddresses();
+            await _addressRepository.CreateAddress(address);
+            return await GetAddresses();
         }
         
-        public IEnumerable<AddressViewItem> UpdateAddress(AddressViewItem addressViewItem)
+        public async Task<IEnumerable<AddressViewItem>> UpdateAddress(AddressViewItem addressViewItem)
         {
             Address address = new()
             {
@@ -67,14 +68,14 @@ namespace Apartment.Business.Services
                 StreetName = addressViewItem.StreetName
             };
             
-            _addressRepository.UpdateAddress(address);
-            return GetAddresses();
+            await _addressRepository.UpdateAddress(address);
+            return await GetAddresses();
         }
         
-        public IEnumerable<AddressViewItem> DeleteAddress(int id)
+        public async Task<IEnumerable<AddressViewItem>> DeleteAddress(int id)
         {
-            _addressRepository.DeleteAddress(id);
-            return GetAddresses();
+            await _addressRepository.DeleteAddress(id);
+            return await GetAddresses();
         }
     }
 }

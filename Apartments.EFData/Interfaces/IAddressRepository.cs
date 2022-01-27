@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EfData.Entities;
 
 namespace EfData.Interfaces
 {
     public interface IAddressRepository
     {
-        public IEnumerable<Address> GetAddresses();
-        public Address GetAddressById(int id);
-        public void CreateAddress(Address address);
-        public void UpdateAddress(Address address);
-        public void DeleteAddress(int id);
+        public Task<IEnumerable<Address>> GetAddresses();
+        public Task<Address> GetAddressById(int id);
+        public Task CreateAddress(Address address);
+        public Task UpdateAddress(Address address);
+        public Task DeleteAddress(int id);
     }
 }

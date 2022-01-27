@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -16,37 +16,37 @@ namespace Apartments.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetKinds()
+        public async Task<IActionResult> GetKinds()
         {
-            IEnumerable<KindViewItem> result = _kindService.GetKinds();
+            var result = await _kindService.GetKinds();
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetKindById(int id)
+        public async Task<IActionResult> GetKindById(int id)
         {
-            KindViewItem result = _kindService.GetKindById(id);
+            var result = await _kindService.GetKindById(id);
             return Ok(result);
         }
         
         [HttpPost]
-        public IActionResult CreateKind(KindViewItem kindViewItem)
+        public async Task<IActionResult> CreateKind(KindViewItem kindViewItem)
         {
-            IEnumerable<KindViewItem> result = _kindService.CreateKind(kindViewItem);
+            var result = await _kindService.CreateKind(kindViewItem);
             return Ok(result);
         }
         
         [HttpPut]
-        public IActionResult UpdateKind(KindViewItem kindViewItem)
+        public async Task<IActionResult> UpdateKind(KindViewItem kindViewItem)
         {
-            IEnumerable<KindViewItem> result = _kindService.UpdateKind(kindViewItem);
+            var result = await _kindService.UpdateKind(kindViewItem);
             return Ok(result);
         }
         
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteKind(int id)
+        public async Task<IActionResult> DeleteKind(int id)
         {
-            IEnumerable<KindViewItem> result = _kindService.DeleteKind(id);
+            var result = await _kindService.DeleteKind(id);
             return Ok(result);
         }
     }

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using EfData.Entities;
@@ -16,9 +17,9 @@ namespace Apartment.Business.Services
             _kindRepository = kindRepository;
         }
         
-        public IEnumerable<KindViewItem> GetKinds()
+        public async Task<IEnumerable<KindViewItem>> GetKinds()
         {
-            IEnumerable<Kind> kinds = _kindRepository.GetKinds();
+            var kinds = await _kindRepository.GetKinds();
 
             return kinds.Select(kind => 
                 new KindViewItem 
@@ -28,9 +29,9 @@ namespace Apartment.Business.Services
                 });
         }
 
-        public KindViewItem GetKindById(int id)
+        public async Task<KindViewItem> GetKindById(int id)
         {
-            Kind kind = _kindRepository.GetKindById(id);
+            var kind = await _kindRepository.GetKindById(id);
             
             return new KindViewItem 
             {
@@ -39,7 +40,7 @@ namespace Apartment.Business.Services
             };
         }
         
-        public IEnumerable<KindViewItem> CreateKind(KindViewItem kindViewItem)
+        public async Task<IEnumerable<KindViewItem>> CreateKind(KindViewItem kindViewItem)
         {
             Kind kind = new()
             {
@@ -47,11 +48,11 @@ namespace Apartment.Business.Services
                 Name = kindViewItem.Name
             };
             
-            _kindRepository.CreateKind(kind);
-            return GetKinds();
+            await _kindRepository.CreateKind(kind);
+            return await GetKinds();
         }
         
-        public IEnumerable<KindViewItem> UpdateKind(KindViewItem kindViewItem)
+        public async Task<IEnumerable<KindViewItem>> UpdateKind(KindViewItem kindViewItem)
         {
             Kind kind = new()
             {
@@ -59,14 +60,14 @@ namespace Apartment.Business.Services
                 Name = kindViewItem.Name
             };
             
-            _kindRepository.UpdateKind(kind);
-            return GetKinds();
+            await _kindRepository.UpdateKind(kind);
+            return await GetKinds();
         }
         
-        public IEnumerable<KindViewItem> DeleteKind(int id)
+        public async Task<IEnumerable<KindViewItem>> DeleteKind(int id)
         {
-            _kindRepository.DeleteKind(id);
-            return GetKinds();
+            await _kindRepository.DeleteKind(id);
+            return await GetKinds();
         }
 
     }

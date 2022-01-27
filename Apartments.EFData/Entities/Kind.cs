@@ -8,5 +8,10 @@ namespace EfData.Entities
         public string Name { get; set; }
         
         public List<Apartment> Apartments { get; set; }
+
+        public Kind()
+        {
+            Apartments = new List<Apartment>();
+        }
     }
 }
