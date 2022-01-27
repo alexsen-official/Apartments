@@ -7,8 +7,8 @@ namespace EfData.Interfaces
     {
         public IEnumerable<Amenity> GetAmenities();
         public Amenity GetAmenityById(int id);
-        public IEnumerable<Amenity> CreateAmenity(Amenity amenity);
-        public IEnumerable<Amenity> UpdateAmenity(Amenity amenity);
-        public IEnumerable<Amenity> DeleteAmenity(int id);
+        public void CreateAmenity(Amenity amenity);
+        public void UpdateAmenity(Amenity amenity);
+        public void DeleteAmenity(int id);
     }
 }

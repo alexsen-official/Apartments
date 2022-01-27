@@ -27,49 +27,65 @@ namespace EfData.Repositories
 
         public Apartment GetApartmentById(int id)
         {
-            return GetApartments().FirstOrDefault(apartment => apartment.Id == id);
+            return _context.Apartments
+                .Include(a => a.Kind)
+                .Include(a => a.Address)
+                .Include(a => a.Owner)
+                .Include(a => a.Provider)
+                .Include(a => a.Amenities)
+                .SingleOrDefault(a => a.Id == id);
         }
         
-        public IEnumerable<Apartment> CreateApartment(Apartment apartment)
+        public void CreateApartment(Apartment apartment)
         {
             _context.Apartments.Add(apartment);
             _context.SaveChanges();
-
-            return GetApartments();
         }
         
-        public IEnumerable<Apartment> UpdateApartment(Apartment apartment)
+        public void UpdateApartment(Apartment apartment)
         {
-            Apartment dbApartment = _context.Apartments.Find(apartment.Id);
+            Apartment dbApartment = _context.Apartments
+                .Include(a => a.Kind)
+                .Include(a => a.Address)
+                .Include(a => a.Owner)
+                .Include(a => a.Provider)
+                .Include(a => a.Amenities)
+                .SingleOrDefault(a => a.Id == apartment.Id);
 
-            if (dbApartment != null)
+            if (dbApartment == null)
             {
-                dbApartment.Address = apartment.Address;
-                dbApartment.AddressId = dbApartment.AddressId;
-                dbApartment.Amenities = apartment.Amenities;
-                dbApartment.Kind = apartment.Kind;
-                dbApartment.Owner = apartment.Owner;
-                dbApartment.Price = apartment.Price;
-                dbApartment.Provider = apartment.Provider;
-                dbApartment.PetsAllowed = apartment.PetsAllowed;
-
-                _context.SaveChanges();
+                return;
             }
 
-            return GetApartments();
+            dbApartment.Address = apartment.Address;
+            dbApartment.AddressId = dbApartment.AddressId;
+            dbApartment.Amenities = apartment.Amenities;
+            dbApartment.Kind = apartment.Kind;
+            dbApartment.Owner = apartment.Owner;
+            dbApartment.Price = apartment.Price;
+            dbApartment.Provider = apartment.Provider;
+            dbApartment.PetsAllowed = apartment.PetsAllowed;
+
+            _context.SaveChanges();
         }
         
-        public IEnumerable<Apartment> DeleteApartment(int id)
+        public void DeleteApartment(int id)
         {
-            Apartment dbApartment = GetApartmentById(id);
+            Apartment dbApartment = _context.Apartments
+                .Include(a => a.Kind)
+                .Include(a => a.Address)
+                .Include(a => a.Owner)
+                .Include(a => a.Provider)
+                .Include(a => a.Amenities)
+                .SingleOrDefault(a => a.Id == id);
 
-            if (dbApartment != null)
+            if (dbApartment == null)
             {
-                _context.Apartments.Remove(dbApartment);
-                _context.SaveChanges();
+                return;
             }
-
-            return GetApartments();
+            
+            _context.Apartments.Remove(dbApartment);
+            _context.SaveChanges();
         }
     }
 }

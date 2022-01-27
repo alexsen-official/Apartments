@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using EfData.Entities;
 using EfData.Interfaces;
 
@@ -20,43 +21,41 @@ namespace EfData.Repositories
 
         public Amenity GetAmenityById(int id)
         {
-            return _context.Amenities.Find(id);
+            return _context.Amenities.SingleOrDefault(a => a.Id == id);
         }
 
-        public IEnumerable<Amenity> CreateAmenity(Amenity amenity)
+        public void CreateAmenity(Amenity amenity)
         {
             _context.Amenities.Add(amenity);
             _context.SaveChanges();
-
-            return _context.Amenities;
         }
         
-        public IEnumerable<Amenity> UpdateAmenity(Amenity amenity)
+        public void UpdateAmenity(Amenity amenity)
         {
-            Amenity dbAmenity = _context.Amenities.Find(amenity.Id);
+            Amenity dbAmenity = _context.Amenities.SingleOrDefault(a => a.Id == amenity.Id);
 
-            if (dbAmenity != null)
+            if (dbAmenity == null)
             {
-                dbAmenity.Name = amenity.Name;
-                dbAmenity.Apartments = amenity.Apartments;
-
-                _context.SaveChanges();
+                return;
             }
+            
+            dbAmenity.Name = amenity.Name;
+            dbAmenity.Apartments = amenity.Apartments;
 
-            return _context.Amenities;
+            _context.SaveChanges();
         }
         
-        public IEnumerable<Amenity> DeleteAmenity(int id)
+        public void DeleteAmenity(int id)
         {
-            Amenity dbAmenity = _context.Amenities.Find(id);
+            Amenity dbAmenity = _context.Amenities.SingleOrDefault(a => a.Id == id);
 
-            if (dbAmenity != null)
+            if (dbAmenity == null)
             {
-                _context.Amenities.Remove(dbAmenity);
-                _context.SaveChanges();
+                return;
             }
-
-            return _context.Amenities;
+            
+            _context.Amenities.Remove(dbAmenity);
+            _context.SaveChanges();
         }
     }
 }

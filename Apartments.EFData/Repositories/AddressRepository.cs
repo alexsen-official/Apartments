@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using EfData.Entities;
 using EfData.Interfaces;
 
@@ -20,45 +21,43 @@ namespace EfData.Repositories
 
         public Address GetAddressById(int id)
         {
-            return _context.Addresses.Find(id);
+            return _context.Addresses.SingleOrDefault(a => a.Id == id);
         }
 
-        public IEnumerable<Address> CreateAddress(Address address)
+        public void CreateAddress(Address address)
         {
             _context.Addresses.Add(address);
             _context.SaveChanges();
-
-            return _context.Addresses;
         }
 
-        public IEnumerable<Address> UpdateAddress(Address address)
+        public void UpdateAddress(Address address)
         {
-            Address dbAddress = _context.Addresses.Find(address.Id);
+            Address dbAddress = _context.Addresses.SingleOrDefault(a => a.Id == address.Id);
 
-            if (dbAddress != null)
+            if (dbAddress == null)
             {
-                dbAddress.FlatNumber = address.FlatNumber;
-                dbAddress.HouseNumber = address.HouseNumber;
-                dbAddress.StreetName = address.StreetName;
-                dbAddress.Apartment = address.Apartment;
-                
-                _context.SaveChanges();
+                return;
             }
-
-            return _context.Addresses;
+            
+            dbAddress.FlatNumber = address.FlatNumber;
+            dbAddress.HouseNumber = address.HouseNumber;
+            dbAddress.StreetName = address.StreetName;
+            dbAddress.Apartment = address.Apartment;
+                
+            _context.SaveChanges();
         }
         
-        public IEnumerable<Address> DeleteAddress(int id)
+        public void DeleteAddress(int id)
         {
-            Address dbAddress = _context.Addresses.Find(id);
+            Address dbAddress = _context.Addresses.SingleOrDefault(a => a.Id == id);
 
-            if (dbAddress != null)
+            if (dbAddress == null)
             {
-                _context.Addresses.Remove(dbAddress);
-                _context.SaveChanges();
+                return;
             }
-
-            return _context.Addresses;
+            
+            _context.Addresses.Remove(dbAddress);
+            _context.SaveChanges();
         }
     }
 }

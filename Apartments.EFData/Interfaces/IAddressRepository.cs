@@ -7,8 +7,8 @@ namespace EfData.Interfaces
     {
         public IEnumerable<Address> GetAddresses();
         public Address GetAddressById(int id);
-        public IEnumerable<Address> CreateAddress(Address address);
-        public IEnumerable<Address> UpdateAddress(Address address);
-        public IEnumerable<Address> DeleteAddress(int id);
+        public void CreateAddress(Address address);
+        public void UpdateAddress(Address address);
+        public void DeleteAddress(int id);
     }
 }

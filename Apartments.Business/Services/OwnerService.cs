@@ -52,16 +52,8 @@ namespace Apartment.Business.Services
                 PhoneNumber = ownerViewItem.PhoneNumber
             };
             
-            IEnumerable<Owner> owners = _ownerRepository.CreateOwner(owner);
-            
-            return owners.Select(o => 
-                new OwnerViewItem 
-                {
-                    Id = o.Id,
-                    FirstName = o.FirstName,
-                    LastName = o.LastName,
-                    PhoneNumber = o.PhoneNumber
-                });
+            _ownerRepository.CreateOwner(owner);
+            return GetOwners();
         }
         
         public IEnumerable<OwnerViewItem> UpdateOwner(OwnerViewItem ownerViewItem)
@@ -74,30 +66,14 @@ namespace Apartment.Business.Services
                 PhoneNumber = ownerViewItem.PhoneNumber
             };
             
-            IEnumerable<Owner> owners = _ownerRepository.UpdateOwner(owner);
-            
-            return owners.Select(o => 
-                new OwnerViewItem 
-                {
-                    Id = o.Id,
-                    FirstName = o.FirstName,
-                    LastName = o.LastName,
-                    PhoneNumber = o.PhoneNumber
-                });
+            _ownerRepository.UpdateOwner(owner);
+            return GetOwners();
         }
         
         public IEnumerable<OwnerViewItem> DeleteOwner(int id)
         {
-            IEnumerable<Owner> owners = _ownerRepository.DeleteOwner(id);
-            
-            return owners.Select(o => 
-                new OwnerViewItem 
-                {
-                    Id = o.Id,
-                    FirstName = o.FirstName,
-                    LastName = o.LastName,
-                    PhoneNumber = o.PhoneNumber
-                });
+            _ownerRepository.DeleteOwner(id);
+            return GetOwners();
         }
     }
 }

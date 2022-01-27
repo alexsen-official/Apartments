@@ -47,14 +47,8 @@ namespace Apartment.Business.Services
                 Name = kindViewItem.Name
             };
             
-            IEnumerable<Kind> kinds = _kindRepository.CreateKind(kind);
-            
-            return kinds.Select(k => 
-                new KindViewItem 
-                {
-                    Id = k.Id,
-                    Name = k.Name
-                });
+            _kindRepository.CreateKind(kind);
+            return GetKinds();
         }
         
         public IEnumerable<KindViewItem> UpdateKind(KindViewItem kindViewItem)
@@ -65,26 +59,14 @@ namespace Apartment.Business.Services
                 Name = kindViewItem.Name
             };
             
-            IEnumerable<Kind> kinds = _kindRepository.UpdateKind(kind);
-            
-            return kinds.Select(k => 
-                new KindViewItem 
-                {
-                    Id = k.Id,
-                    Name = k.Name
-                });
+            _kindRepository.UpdateKind(kind);
+            return GetKinds();
         }
         
         public IEnumerable<KindViewItem> DeleteKind(int id)
         {
-            IEnumerable<Kind> kinds = _kindRepository.DeleteKind(id);
-            
-            return kinds.Select(k => 
-                new KindViewItem 
-                {
-                    Id = k.Id,
-                    Name = k.Name
-                });
+            _kindRepository.DeleteKind(id);
+            return GetKinds();
         }
 
     }

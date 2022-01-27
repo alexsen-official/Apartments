@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using EfData.Entities;
 using EfData.Interfaces;
 
@@ -20,45 +21,43 @@ namespace EfData.Repositories
 
         public Owner GetOwnerById(int id)
         {
-            return _context.Owners.Find(id);
+            return _context.Owners.SingleOrDefault(o => o.Id == id);
         }
         
-        public IEnumerable<Owner> CreateOwner(Owner owner)
+        public void CreateOwner(Owner owner)
         {
             _context.Owners.Add(owner);
             _context.SaveChanges();
-
-            return _context.Owners;
         }
         
-        public IEnumerable<Owner> UpdateOwner(Owner owner)
+        public void UpdateOwner(Owner owner)
         {
-            Owner dbOwner = _context.Owners.Find(owner.Id);
+            Owner dbOwner = _context.Owners.SingleOrDefault(o => o.Id == owner.Id);
 
-            if (dbOwner != null)
+            if (dbOwner == null)
             {
-                dbOwner.FirstName = owner.FirstName;
-                dbOwner.LastName = owner.LastName;
-                dbOwner.PhoneNumber = owner.PhoneNumber;
-                dbOwner.Apartments = dbOwner.Apartments;
-
-                _context.SaveChanges();
+                return;
             }
+            
+            dbOwner.FirstName = owner.FirstName;
+            dbOwner.LastName = owner.LastName;
+            dbOwner.PhoneNumber = owner.PhoneNumber;
+            dbOwner.Apartments = dbOwner.Apartments;
 
-            return _context.Owners;
+            _context.SaveChanges();
         }
         
-        public IEnumerable<Owner> DeleteOwner(int id)
+        public void DeleteOwner(int id)
         {
-            Owner dbOwner = _context.Owners.Find(id);
+            Owner dbOwner =_context.Owners.SingleOrDefault(o => o.Id == id);
 
-            if (dbOwner != null)
+            if (dbOwner == null)
             {
-                _context.Owners.Remove(dbOwner);
-                _context.SaveChanges();
+                return;
             }
-
-            return _context.Owners;
+            
+            _context.Owners.Remove(dbOwner);
+            _context.SaveChanges();
         }
     }
 }

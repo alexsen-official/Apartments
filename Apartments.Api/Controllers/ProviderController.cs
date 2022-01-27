@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -17,31 +18,36 @@ namespace Apartments.Controllers
         [HttpGet]
         public IActionResult GetProviders()
         {
-            return Ok(_providerService.GetProviders());
+            IEnumerable<ProviderViewItem> result = _providerService.GetProviders();
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]
         public IActionResult GetProviderById(int id)
         {
-            return Ok(_providerService.GetProviderById(id));
+            ProviderViewItem result = _providerService.GetProviderById(id);
+            return Ok(result);
         }
         
         [HttpPost]
         public IActionResult CreateProvider(ProviderViewItem providerViewItem)
         {
-            return Ok(_providerService.CreateProvider(providerViewItem));
+            IEnumerable<ProviderViewItem> result = _providerService.CreateProvider(providerViewItem);
+            return Ok(result);
         }
         
         [HttpPut]
         public IActionResult UpdateProvider(ProviderViewItem providerViewItem)
         {
-            return Ok(_providerService.UpdateProvider(providerViewItem));
+            IEnumerable<ProviderViewItem> result = _providerService.UpdateProvider(providerViewItem);
+            return Ok(result);
         }
         
         [HttpDelete("{id:int}")]
         public IActionResult DeleteProvider(int id)
         {
-            return Ok(_providerService.DeleteProvider(id));
+            IEnumerable<ProviderViewItem> result = _providerService.DeleteProvider(id);
+            return Ok(result);
         }
     }
 }

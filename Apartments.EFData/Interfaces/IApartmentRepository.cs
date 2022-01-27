@@ -7,8 +7,8 @@ namespace EfData.Interfaces
     {
         public IEnumerable<Apartment> GetApartments();
         public Apartment GetApartmentById(int id);
-        public IEnumerable<Apartment> CreateApartment(Apartment apartment);
-        public IEnumerable<Apartment> UpdateApartment(Apartment apartment);
-        public IEnumerable<Apartment> DeleteApartment(int id);
+        public void CreateApartment(Apartment apartment);
+        public void UpdateApartment(Apartment apartment);
+        public void DeleteApartment(int id);
     }
 }

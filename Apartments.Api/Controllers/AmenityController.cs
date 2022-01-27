@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -17,31 +18,36 @@ namespace Apartments.Controllers
         [HttpGet]
         public IActionResult GetAmenities()
         {
-            return Ok(_amenityService.GetAmenities());
+            IEnumerable<AmenityViewItem> result = _amenityService.GetAmenities();
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]
         public IActionResult GetAmenityById(int id)
         {
-            return Ok(_amenityService.GetAmenityById(id));
+            AmenityViewItem result = _amenityService.GetAmenityById(id);
+            return Ok(result);
         }
         
         [HttpPost]
         public IActionResult CreateAmenity(AmenityViewItem amenityViewItem)
         {
-            return Ok(_amenityService.CreateAmenity(amenityViewItem));
+            IEnumerable<AmenityViewItem> result = _amenityService.CreateAmenity(amenityViewItem);
+            return Ok(result);
         }
         
         [HttpPut]
         public IActionResult UpdateAmenity(AmenityViewItem amenityViewItem)
         {
-            return Ok(_amenityService.UpdateAmenity(amenityViewItem));
+            IEnumerable<AmenityViewItem> result = _amenityService.UpdateAmenity(amenityViewItem);
+            return Ok(result);
         }
 
         [HttpDelete("{id:int}")]
         public IActionResult DeleteAmenity(int id)
         {
-            return Ok(_amenityService.DeleteAmenity(id));
+            IEnumerable<AmenityViewItem> result = _amenityService.DeleteAmenity(id);
+            return Ok(result);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Apartment.Business.Interfaces;
 using Apartments.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -18,31 +19,36 @@ namespace Apartments.Controllers
         [HttpGet]
         public IActionResult GetApartments()
         {
-            return Ok(_apartmentService.GetApartments());
+            IEnumerable<ApartmentViewModel> result = _apartmentService.GetApartments();
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]
         public IActionResult GetApartmentById(int id)
         {
-            return Ok(_apartmentService.GetApartmentById(id));
+            ApartmentViewModel result = _apartmentService.GetApartmentById(id);
+            return Ok(result);
         }
         
         [HttpPost]
         public IActionResult CreateApartment(ApartmentViewModel apartmentViewModel)
         {
-            return Ok(_apartmentService.CreateApartment(apartmentViewModel));
+            IEnumerable<ApartmentViewModel> result = _apartmentService.CreateApartment(apartmentViewModel);
+            return Ok(result);
         }
         
         [HttpPut]
         public IActionResult UpdateApartment(ApartmentViewModel apartmentViewModel)
         {
-            return Ok(_apartmentService.UpdateApartment(apartmentViewModel));
+            IEnumerable<ApartmentViewModel> result = _apartmentService.UpdateApartment(apartmentViewModel);
+            return Ok(result);
         }
         
         [HttpDelete("{id:int}")]
         public IActionResult DeleteApartment(int id)
         {
-            return Ok(_apartmentService.DeleteApartment(id));
+            IEnumerable<ApartmentViewModel> result = _apartmentService.DeleteApartment(id);
+            return Ok(result);
         }
     }
 }

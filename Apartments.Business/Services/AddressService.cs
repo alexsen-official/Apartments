@@ -53,16 +53,8 @@ namespace Apartment.Business.Services
                 StreetName = addressViewItem.StreetName
             };
             
-            IEnumerable<Address> addresses = _addressRepository.CreateAddress(address);
-            
-            return addresses.Select(a => 
-                new AddressViewItem 
-                {
-                    Id = a.Id,
-                    StreetName = a.StreetName,
-                    HouseNumber = a.HouseNumber,
-                    FlatNumber = a.FlatNumber
-                });
+            _addressRepository.CreateAddress(address);
+            return GetAddresses();
         }
         
         public IEnumerable<AddressViewItem> UpdateAddress(AddressViewItem addressViewItem)
@@ -74,31 +66,15 @@ namespace Apartment.Business.Services
                 FlatNumber = addressViewItem.FlatNumber,
                 StreetName = addressViewItem.StreetName
             };
-
-            IEnumerable<Address> addresses = _addressRepository.UpdateAddress(address);
             
-            return addresses.Select(a => 
-                new AddressViewItem 
-                {
-                    Id = a.Id,
-                    StreetName = a.StreetName,
-                    HouseNumber = a.HouseNumber,
-                    FlatNumber = a.FlatNumber
-                });
+            _addressRepository.UpdateAddress(address);
+            return GetAddresses();
         }
         
         public IEnumerable<AddressViewItem> DeleteAddress(int id)
         {
-            IEnumerable<Address> addresses = _addressRepository.DeleteAddress(id);
-            
-            return addresses.Select(a => 
-                new AddressViewItem 
-                {
-                    Id = a.Id,
-                    StreetName = a.StreetName,
-                    HouseNumber = a.HouseNumber,
-                    FlatNumber = a.FlatNumber
-                });
+            _addressRepository.DeleteAddress(id);
+            return GetAddresses();
         }
     }
 }

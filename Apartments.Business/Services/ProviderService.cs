@@ -47,14 +47,8 @@ namespace Apartment.Business.Services
                 Name = providerViewItem.Name
             };
             
-            IEnumerable<Provider> providers = _providerRepository.CreateProvider(provider);
-            
-            return providers.Select(p => 
-                new ProviderViewItem 
-                {
-                    Id = p.Id,
-                    Name = p.Name
-                });
+            _providerRepository.CreateProvider(provider);
+            return GetProviders();
         }
         
         public IEnumerable<ProviderViewItem> UpdateProvider(ProviderViewItem providerViewItem)
@@ -65,26 +59,14 @@ namespace Apartment.Business.Services
                 Name = providerViewItem.Name
             };
             
-            IEnumerable<Provider> providers = _providerRepository.UpdateProvider(provider);
-            
-            return providers.Select(p => 
-                new ProviderViewItem 
-                {
-                    Id = p.Id,
-                    Name = p.Name
-                });
+            _providerRepository.UpdateProvider(provider);
+            return GetProviders();
         }
         
         public IEnumerable<ProviderViewItem> DeleteProvider(int id)
         {
-            IEnumerable<Provider> providers = _providerRepository.DeleteProvider(id);
-            
-            return providers.Select(p => 
-                new ProviderViewItem 
-                {
-                    Id = p.Id,
-                    Name = p.Name
-                });
+            _providerRepository.DeleteProvider(id);
+            return GetProviders();
         }
     }
 }

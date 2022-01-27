@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using EfData.Entities;
 using EfData.Interfaces;
 
@@ -20,43 +21,41 @@ namespace EfData.Repositories
 
         public Kind GetKindById(int id)
         {
-            return _context.Kinds.Find(id);
+            return _context.Kinds.SingleOrDefault(k => k.Id == id);
         }
         
-        public IEnumerable<Kind> CreateKind(Kind kind)
+        public void CreateKind(Kind kind)
         {
             _context.Kinds.Add(kind);
             _context.SaveChanges();
-
-            return _context.Kinds;
         }
         
-        public IEnumerable<Kind> UpdateKind(Kind kind)
+        public void UpdateKind(Kind kind)
         {
-            Kind dbKind = _context.Kinds.Find(kind.Id);
+            Kind dbKind = _context.Kinds.SingleOrDefault(k => k.Id == kind.Id);
 
-            if (dbKind != null)
+            if (dbKind == null)
             {
-                dbKind.Name = kind.Name;
-                dbKind.Apartments = kind.Apartments;
-
-                _context.SaveChanges();
+                return;
             }
+            
+            dbKind.Name = kind.Name;
+            dbKind.Apartments = kind.Apartments;
 
-            return _context.Kinds;
+            _context.SaveChanges();
         }
         
-        public IEnumerable<Kind> DeleteKind(int id)
+        public void DeleteKind(int id)
         {
-            Kind dbKind = _context.Kinds.Find(id);
+            Kind dbKind = _context.Kinds.SingleOrDefault(k => k.Id == id);
 
-            if (dbKind != null)
+            if (dbKind == null)
             {
-                _context.Kinds.Remove(dbKind);
-                _context.SaveChanges();
+                return;
             }
 
-            return _context.Kinds;
+            _context.Kinds.Remove(dbKind);
+            _context.SaveChanges();
         }
     }
 }

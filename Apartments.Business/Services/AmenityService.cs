@@ -47,14 +47,8 @@ namespace Apartment.Business.Services
                 Name = amenityViewItem.Name
             };
             
-            IEnumerable<Amenity> amenities = _amenityRepository.CreateAmenity(amenity);
-            
-            return amenities.Select(a => 
-                new AmenityViewItem() 
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                });
+            _amenityRepository.CreateAmenity(amenity);
+            return GetAmenities();
         }
         
         public IEnumerable<AmenityViewItem> UpdateAmenity(AmenityViewItem amenityViewItem)
@@ -65,26 +59,14 @@ namespace Apartment.Business.Services
                 Name = amenityViewItem.Name
             };
             
-            IEnumerable<Amenity> amenities = _amenityRepository.UpdateAmenity(amenity);
-            
-            return amenities.Select(a => 
-                new AmenityViewItem
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                });
+            _amenityRepository.UpdateAmenity(amenity);
+            return GetAmenities();
         }
         
         public IEnumerable<AmenityViewItem> DeleteAmenity(int id)
         {
-            IEnumerable<Amenity> amenities = _amenityRepository.DeleteAmenity(id);
-            
-            return amenities.Select(a => 
-                new AmenityViewItem() 
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                });
+            _amenityRepository.DeleteAmenity(id);
+            return GetAmenities();
         }
     }
 }

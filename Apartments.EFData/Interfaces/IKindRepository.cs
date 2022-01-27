@@ -7,8 +7,8 @@ namespace EfData.Interfaces
     {
         public IEnumerable<Kind> GetKinds();
         public Kind GetKindById(int id);
-        public IEnumerable<Kind> CreateKind(Kind kind);
-        public IEnumerable<Kind> UpdateKind(Kind kind);
-        public IEnumerable<Kind> DeleteKind(int id);
+        public void CreateKind(Kind kind);
+        public void UpdateKind(Kind kind);
+        public void DeleteKind(int id);
     }
 }

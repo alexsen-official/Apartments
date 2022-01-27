@@ -7,8 +7,8 @@ namespace EfData.Interfaces
     {
         public IEnumerable<Owner> GetOwners();
         public Owner GetOwnerById(int id);
-        public IEnumerable<Owner> CreateOwner(Owner owner);
-        public IEnumerable<Owner> UpdateOwner(Owner owner);
-        public IEnumerable<Owner> DeleteOwner(int id);
+        public void CreateOwner(Owner owner);
+        public void UpdateOwner(Owner owner);
+        public void DeleteOwner(int id);
     }
 }

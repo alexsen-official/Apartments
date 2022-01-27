@@ -103,7 +103,83 @@ namespace Apartment.Business.Services
         
         public ApartmentViewModel GetApartmentById(int id)
         {
-            return GetApartments().FirstOrDefault(apartment => apartment.Id == id);
+            EfData.Entities.Apartment apartment = _apartmentRepository.GetApartmentById(id);
+
+            KindViewItem kindViewItem = null;
+            AddressViewItem addressViewItem = null;
+            OwnerViewItem ownerViewItem = null;
+            ProviderViewItem providerViewItem = null;
+
+            List<AmenityViewItem> amenityViewItems = new();
+
+            if (apartment == null)
+            {
+                return null;
+            }
+
+            if (apartment.Kind != null)
+            {
+                kindViewItem = new KindViewItem
+                {
+                    Id = apartment.Kind.Id,
+                    Name = apartment.Kind.Name
+                };
+            }
+
+            if (apartment.Address != null)
+            {
+                addressViewItem = new AddressViewItem
+                {
+                    Id = apartment.Address.Id,
+                    StreetName = apartment.Address.StreetName,
+                    HouseNumber = apartment.Address.HouseNumber,
+                    FlatNumber = apartment.Address.FlatNumber
+                };
+            }
+
+            if (apartment.Owner != null)
+            {
+                ownerViewItem = new OwnerViewItem
+                {
+                    Id = apartment.Owner.Id,
+                    FirstName = apartment.Owner.FirstName,
+                    LastName = apartment.Owner.LastName,
+                    PhoneNumber = apartment.Owner.PhoneNumber
+                };
+            }
+
+            if (apartment.Provider != null)
+            {
+                providerViewItem = new ProviderViewItem
+                {
+                    Id = apartment.Provider.Id,
+                    Name = apartment.Provider.Name
+                };
+            }
+
+            amenityViewItems.AddRange(
+                apartment.Amenities
+                    .Select(amenity =>
+                        new AmenityViewItem
+                        {
+                            Id = amenity.Id,
+                            Name = amenity.Name
+                        })
+            );
+
+            ApartmentViewModel apartmentViewModel = new()
+            {
+                Id = apartment.Id,
+                Kind = kindViewItem,
+                Address = addressViewItem,
+                Owner = ownerViewItem,
+                Provider = providerViewItem,
+                Amenities = amenityViewItems,
+                PetsAllowed = apartment.PetsAllowed,
+                Price = apartment.Price
+            };
+
+            return apartmentViewModel;
         }
         
         public IEnumerable<ApartmentViewModel> CreateApartment(ApartmentViewModel apartmentViewModel)

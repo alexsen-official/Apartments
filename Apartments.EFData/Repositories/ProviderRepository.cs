@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using EfData.Entities;
 using EfData.Interfaces;
 
@@ -19,43 +20,41 @@ namespace EfData.Repositories
 
         public Provider GetProviderById(int id)
         {
-            return _context.Providers.Find(id);
+            return _context.Providers.SingleOrDefault(p => p.Id == id);
         }
         
-        public IEnumerable<Provider> CreateProvider(Provider provider)
+        public void CreateProvider(Provider provider)
         {
             _context.Providers.Add(provider);
             _context.SaveChanges();
-
-            return _context.Providers;
         }
         
-        public IEnumerable<Provider> UpdateProvider(Provider provider)
+        public void UpdateProvider(Provider provider)
         {
-            Provider dbProvider = _context.Providers.Find(provider.Id);
+            Provider dbProvider = _context.Providers.SingleOrDefault(p => p.Id == provider.Id);
 
-            if (dbProvider != null)
+            if (dbProvider == null)
             {
-                dbProvider.Name = provider.Name;
-                dbProvider.Apartments = provider.Apartments;
-
-                _context.SaveChanges();
+                return;
             }
+            
+            dbProvider.Name = provider.Name;
+            dbProvider.Apartments = provider.Apartments;
 
-            return _context.Providers;
+            _context.SaveChanges();
         }
         
-        public IEnumerable<Provider> DeleteProvider(int id)
+        public void DeleteProvider(int id)
         {
-            Provider dbProvider = _context.Providers.Find(id);
+            Provider dbProvider = _context.Providers.SingleOrDefault(p => p.Id == id);
 
-            if (dbProvider != null)
+            if (dbProvider == null)
             {
-                _context.Providers.Remove(dbProvider);
-                _context.SaveChanges();
+                return;
             }
-
-            return _context.Providers;
+            
+            _context.Providers.Remove(dbProvider);
+            _context.SaveChanges();
         }
     }
 }
