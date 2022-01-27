@@ -30,8 +30,9 @@ namespace Apartments
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwaggerConfig();
+                app.UseRequestResponseLogging();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
