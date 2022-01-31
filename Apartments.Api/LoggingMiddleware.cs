@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -6,6 +8,8 @@ namespace Apartments
 {
     public class LoggingMiddleware
     {
+        private static readonly string LogPath = $@"{Directory.GetCurrentDirectory()}/log.txt";
+
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
@@ -23,11 +27,12 @@ namespace Apartments
             }
             finally
             {
-                _logger.LogInformation(
-                    "Request {method} {url} => {statusCode}",
-                    context.Request.Method,
-                    context.Request.Path.Value,
-                    context.Response.StatusCode);
+                string log = $"{DateTime.Now} Request {context.Request.Method} {context.Request.Path.Value} => {context.Response.StatusCode}";
+
+                await using StreamWriter sw = File.AppendText(LogPath);
+                await sw.WriteLineAsync(log);
+
+                _logger.LogInformation(log);
             }
         }
     }

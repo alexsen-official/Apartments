@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Apartments.Extensions;
+using Microsoft.OpenApi.Models;
 
 namespace Apartments
 {
@@ -19,7 +19,11 @@ namespace Apartments
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerConfig();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Apartments", Version = "v1"});
+            });
             
             Apartment.Business.Startup.PassConnectionString(services, Configuration.GetConnectionString("EFDefaultConnection"));
         }
@@ -29,10 +33,15 @@ namespace Apartments
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwaggerConfig();
-                app.UseRequestResponseLogging();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Apartments v1");
+                });
             }
             
+            app.UseMiddleware<LoggingMiddleware>();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
